@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stylish_flutter/model/API/Product/product_object.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
     'genshin5.jpeg'
   ];
 
-  final categoryTitles = <String>['女裝', '男裝', '配件'];
+  // final categoryTitles = <String>['女裝', '男裝', '配件'];
+
+  final menProducts = ProductEntity.getFackMenProductList();
+  final womenProducts = ProductEntity.getFackWomenProductList();
+  final accessoryProducts = ProductEntity.getFackAccessoriesProductList();
 
   @override
   Widget build(BuildContext context) {
@@ -57,32 +62,41 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (BuildContext context, BoxConstraints constraints) {
               if (constraints.maxWidth < 700) {
                 return ListView(
-                  children: [
-                    ProductTitleView(listTitle: categoryTitles[0]),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    ProductTitleView(listTitle: categoryTitles[1]),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    ProductTitleView(listTitle: categoryTitles[2]),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
-                    const ProductCardView(title: '原石', price: 3290),
+                  children: const [
+                    ProductTitleView(listTitle: '男裝'),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductTitleView(listTitle: '女裝'),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductTitleView(listTitle: '配件'),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
+                    ProductCardView(title: '原石', price: 3290),
                   ],
                 );
               } else {
-                return DesktopLayout(categoryTitles: categoryTitles);
+                final List<List<ProductEntity>> productEntities = [
+                  menProducts,
+                  womenProducts,
+                  accessoryProducts
+                ];
+
+                final List<String> categoryTitles =
+                    productEntities.map((products) => products[0].category).toList();
+
+                return DesktopLayout(categoryTitles: categoryTitles, productEntities: productEntities);
               }
             }),
           )
@@ -96,9 +110,11 @@ class DesktopLayout extends StatelessWidget {
   const DesktopLayout({
     super.key,
     required this.categoryTitles,
+    required this.productEntities
   });
 
   final List<String> categoryTitles;
+  final List<List<ProductEntity>> productEntities;
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +122,9 @@ class DesktopLayout extends StatelessWidget {
       children: List.generate(
           categoryTitles.length,
           (index) => TitledCategoryListView(
-                listTitle: categoryTitles[index],
-                listLength: categoryTitles.length,
+                categoryTitles: categoryTitles,
+                index: index,
+                productList: productEntities[index],
               )),
     );
   }
@@ -115,22 +132,25 @@ class DesktopLayout extends StatelessWidget {
 
 class TitledCategoryListView extends StatelessWidget {
   const TitledCategoryListView(
-      {super.key, required this.listTitle, required this.listLength});
+      {super.key, required this.categoryTitles, required this.index, required this.productList});
 
-  final String listTitle;
-  final int listLength;
+  final List<String> categoryTitles;
+  final int index;
+  final List<ProductEntity> productList;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
         child: Column(children: [
-      ProductTitleView(listTitle: listTitle),
+      ProductTitleView(listTitle: categoryTitles[index]),
       Expanded(
           child: Container(
-        width: (MediaQuery.of(context).size.width - 10 * (listLength - 1)) /
-            listLength,
+        width: (MediaQuery.of(context).size.width - 10 * (categoryTitles.length - 1)) /
+            categoryTitles.length,
         padding: const EdgeInsets.only(left: 10),
-        child: ProductListView(),
+        child: ProductListView(
+          productList: productList,
+        ),
       ))
     ]));
   }
@@ -158,18 +178,19 @@ class ProductTitleView extends StatelessWidget {
 }
 
 class ProductListView extends StatelessWidget {
-  const ProductListView({
-    super.key,
-  });
+  const ProductListView({super.key, required this.productList});
+
+  final List<ProductEntity> productList;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
-      itemCount: 10,
+      itemCount: productList.length,
       itemBuilder: (BuildContext context, int index) {
-        return const ProductCardView(title: '原石原石原石原石原石原石', price: 3290);
+        return ProductCardView(
+            title: productList[index].title, price: productList[index].price);
       },
     );
   }
@@ -179,7 +200,7 @@ class ProductCardView extends StatelessWidget {
   const ProductCardView({super.key, required this.title, required this.price});
 
   final String title;
-  final int price;
+  final double price;
 
   @override
   Widget build(BuildContext context) {
