@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'STYLiSH',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -52,36 +52,131 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 190,
             child: BannerListView(imageUrls: imageUrls),
           ),
-          Row(
-            children: List.generate(
-              categoryTitles.length,
-              (index) => 
-              SizedBox(
-                width: MediaQuery.of(context).size.width / categoryTitles.length,
-                height: 20,
-                child:
-                  Text(
-                   categoryTitles[index],
-                   style: const TextStyle(fontWeight: FontWeight.bold),
-                   textAlign: TextAlign.center,
-                  ),
-             )
-            ),
-          ),
-          const ProductCardView(title: '原石', price: 3290,)
+          Expanded(
+            child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+              if (constraints.maxWidth < 700) {
+                return ListView(
+                  children: [
+                    ProductTitleView(listTitle: categoryTitles[0]),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    ProductTitleView(listTitle: categoryTitles[1]),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    ProductTitleView(listTitle: categoryTitles[2]),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                    const ProductCardView(title: '原石', price: 3290),
+                  ],
+                );
+              } else {
+                return DesktopLayout(categoryTitles: categoryTitles);
+              }
+            }),
+          )
         ],
       ),
     );
   }
 }
 
-class ProductCardView extends StatelessWidget {
-  const ProductCardView({
+class DesktopLayout extends StatelessWidget {
+  const DesktopLayout({
     super.key,
-
-    required this.title,
-    required this.price
+    required this.categoryTitles,
   });
+
+  final List<String> categoryTitles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(
+          categoryTitles.length,
+          (index) => TitledCategoryListView(
+                listTitle: categoryTitles[index],
+                listLength: categoryTitles.length,
+              )),
+    );
+  }
+}
+
+class TitledCategoryListView extends StatelessWidget {
+  const TitledCategoryListView(
+      {super.key, required this.listTitle, required this.listLength});
+
+  final String listTitle;
+  final int listLength;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Column(children: [
+      ProductTitleView(listTitle: listTitle),
+      Expanded(
+          child: Container(
+        width: (MediaQuery.of(context).size.width - 10 * (listLength - 1)) /
+            listLength,
+        padding: const EdgeInsets.only(left: 10),
+        child: ProductListView(),
+      ))
+    ]));
+  }
+}
+
+class ProductTitleView extends StatelessWidget {
+  const ProductTitleView({
+    super.key,
+    required this.listTitle,
+  });
+
+  final String listTitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 25,
+      child: Text(
+        listTitle,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}
+
+class ProductListView extends StatelessWidget {
+  const ProductListView({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemCount: 10,
+      itemBuilder: (BuildContext context, int index) {
+        return const ProductCardView(title: '原石原石原石原石原石原石', price: 3290);
+      },
+    );
+  }
+}
+
+class ProductCardView extends StatelessWidget {
+  const ProductCardView({super.key, required this.title, required this.price});
 
   final String title;
   final int price;
@@ -91,29 +186,29 @@ class ProductCardView extends StatelessWidget {
     return SizedBox(
       child: Card(
         borderOnForeground: true,
-        shape: RoundedRectangleBorder(side: const BorderSide(color: Colors.black, width: 1.0),
-        borderRadius: BorderRadius.circular(10.0)),
-        child: SizedBox(
-          width: 300,
-          height: 100,
-          child: Row(children: [
-            Container(
-              width: 70,
-              height: 100,
-              margin: const EdgeInsets.only(left: 10, right: 10),
-              child: Image.asset('images/genshin_stone.jpeg', fit: BoxFit.contain),
-            ),
-            Column(
+        shape: RoundedRectangleBorder(
+            side: const BorderSide(color: Colors.black, width: 1.0),
+            borderRadius: BorderRadius.circular(10.0)),
+        child: Row(children: [
+          Container(
+            width: 70,
+            height: 100,
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child:
+                Image.asset('images/genshin_stone.jpeg', fit: BoxFit.contain),
+          ),
+          Expanded(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, textAlign: TextAlign.left),
+                Text(title),
                 const SizedBox(height: 5),
-                Text('NT\$ $price', textAlign: TextAlign.left)
+                Text('NT\$ $price')
               ],
-            )
-          ]),
-        ),
+            ),
+          )
+        ]),
       ),
     );
   }
@@ -151,15 +246,11 @@ class BannerImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300.0,
-      child: Card(
-        margin: const EdgeInsets.only(left: 5, top: 20, right: 5, bottom: 20),
-        clipBehavior: Clip.antiAlias,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        child: Image.asset('images/${imageUrls[index]}', fit: BoxFit.cover),
-      ),
+    return Card(
+      margin: const EdgeInsets.only(left: 5, top: 20, right: 5, bottom: 20),
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: Image.asset('images/${imageUrls[index]}', fit: BoxFit.cover),
     );
   }
 }
