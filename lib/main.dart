@@ -60,43 +60,22 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
+              final List<List<ProductEntity>> productEntities = [
+                menProducts,
+                womenProducts,
+                accessoryProducts
+              ];
+
               if (constraints.maxWidth < 700) {
-                return ListView(
-                  children: const [
-                    ProductTitleView(listTitle: '男裝'),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductTitleView(listTitle: '女裝'),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductTitleView(listTitle: '配件'),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                    ProductCardView(title: '原石', price: 3290),
-                  ],
-                );
+                return MobileLayout(productEntities: productEntities);
               } else {
-                final List<List<ProductEntity>> productEntities = [
-                  menProducts,
-                  womenProducts,
-                  accessoryProducts
-                ];
+                final List<String> categoryTitles = productEntities
+                    .map((products) => products[0].category)
+                    .toList();
 
-                final List<String> categoryTitles =
-                    productEntities.map((products) => products[0].category).toList();
-
-                return DesktopLayout(categoryTitles: categoryTitles, productEntities: productEntities);
+                return DesktopLayout(
+                    categoryTitles: categoryTitles,
+                    productEntities: productEntities);
               }
             }),
           )
@@ -106,12 +85,40 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class MobileLayout extends StatelessWidget {
+  const MobileLayout(
+      {super.key, required this.productEntities});
+
+  final List<List<ProductEntity>> productEntities;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: getProductTitleAndCardViews(productEntities),
+    );
+  }
+
+  List<Widget> getProductTitleAndCardViews(List<List<ProductEntity>> productEntities) {
+    
+    final List<Widget> widgets = [];
+
+    productEntities.asMap().forEach((index, products) { 
+
+      widgets.add(ProductTitleView(listTitle: products[index].category));
+
+      for (var product in products) { 
+
+        widgets.add(ProductCardView(title: product.title, price: product.price));
+      }
+    });
+
+    return widgets;
+  }
+}
+
 class DesktopLayout extends StatelessWidget {
-  const DesktopLayout({
-    super.key,
-    required this.categoryTitles,
-    required this.productEntities
-  });
+  const DesktopLayout(
+      {super.key, required this.categoryTitles, required this.productEntities});
 
   final List<String> categoryTitles;
   final List<List<ProductEntity>> productEntities;
@@ -132,7 +139,10 @@ class DesktopLayout extends StatelessWidget {
 
 class TitledCategoryListView extends StatelessWidget {
   const TitledCategoryListView(
-      {super.key, required this.categoryTitles, required this.index, required this.productList});
+      {super.key,
+      required this.categoryTitles,
+      required this.index,
+      required this.productList});
 
   final List<String> categoryTitles;
   final int index;
@@ -145,7 +155,8 @@ class TitledCategoryListView extends StatelessWidget {
       ProductTitleView(listTitle: categoryTitles[index]),
       Expanded(
           child: Container(
-        width: (MediaQuery.of(context).size.width - 10 * (categoryTitles.length - 1)) /
+        width: (MediaQuery.of(context).size.width -
+                10 * (categoryTitles.length - 1)) /
             categoryTitles.length,
         padding: const EdgeInsets.only(left: 10),
         child: ProductListView(
