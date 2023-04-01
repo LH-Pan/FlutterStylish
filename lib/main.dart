@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
+import 'detail.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,11 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 242, 244, 248),
-        title: Image.asset("images/STYLiSH.png",
-            fit: BoxFit.cover, height: AppBar().preferredSize.height / 3),
-      ),
+      appBar: const StAppBar(),
       body: Column(
         children: [
           SizedBox(
@@ -66,17 +63,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 accessoryProducts
               ];
 
-              if (constraints.maxWidth < 700) {
-                return MobileLayout(productEntities: productEntities);
-              } else {
-                final List<String> categoryTitles = productEntities
-                    .map((products) => products[0].category)
-                    .toList();
+              final List<String> categoryTitles = productEntities
+                  .map((products) => products[0].category)
+                  .toList();
 
-                return DesktopLayout(
-                    categoryTitles: categoryTitles,
-                    productEntities: productEntities);
-              }
+              return constraints.maxWidth < 700
+                  ? MobileLayout(productEntities: productEntities)
+                  : DesktopLayout(
+                      categoryTitles: categoryTitles,
+                      productEntities: productEntities);
             }),
           )
         ],
@@ -85,9 +80,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class StAppBar extends StatelessWidget with PreferredSizeWidget {
+  const StAppBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: const Color.fromARGB(255, 242, 244, 248),
+      title: Image.asset("images/STYLiSH.png",
+          fit: BoxFit.cover, height: AppBar().preferredSize.height / 3),
+    );
+  }
+
+  @override Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
 class MobileLayout extends StatelessWidget {
-  const MobileLayout(
-      {super.key, required this.productEntities});
+  const MobileLayout({super.key, required this.productEntities});
 
   final List<List<ProductEntity>> productEntities;
 
@@ -98,17 +109,16 @@ class MobileLayout extends StatelessWidget {
     );
   }
 
-  List<Widget> getProductTitleAndCardViews(List<List<ProductEntity>> productEntities) {
-    
+  List<Widget> getProductTitleAndCardViews(
+      List<List<ProductEntity>> productEntities) {
     final List<Widget> widgets = [];
 
-    productEntities.asMap().forEach((index, products) { 
-
+    productEntities.asMap().forEach((index, products) {
       widgets.add(ProductTitleView(listTitle: products[index].category));
 
-      for (var product in products) { 
-
-        widgets.add(ProductCardView(title: product.title, price: product.price));
+      for (var product in products) {
+        widgets
+            .add(ProductCardView(product: product,));
       }
     });
 
@@ -201,46 +211,53 @@ class ProductListView extends StatelessWidget {
       itemCount: productList.length,
       itemBuilder: (BuildContext context, int index) {
         return ProductCardView(
-            title: productList[index].title, price: productList[index].price);
+            product: productList[index]);
       },
     );
   }
 }
 
 class ProductCardView extends StatelessWidget {
-  const ProductCardView({super.key, required this.title, required this.price});
+  const ProductCardView({super.key, required this.product});
 
-  final String title;
-  final double price;
+  final ProductEntity product;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Card(
-        borderOnForeground: true,
-        shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.black, width: 1.0),
-            borderRadius: BorderRadius.circular(10.0)),
-        child: Row(children: [
-          Container(
-            width: 70,
-            height: 100,
-            margin: const EdgeInsets.only(left: 10, right: 10),
-            child:
-                Image.asset('images/genshin_stone.jpeg', fit: BoxFit.contain),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title),
-                const SizedBox(height: 5),
-                Text('NT\$ $price')
-              ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailPage(product: product))
+        );
+      },
+      child: SizedBox(
+        child: Card(
+          borderOnForeground: true,
+          shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Colors.black, width: 1.0),
+              borderRadius: BorderRadius.circular(10.0)),
+          child: Row(children: [
+            Container(
+              width: 70,
+              height: 100,
+              margin: const EdgeInsets.only(left: 10, right: 10),
+              child:
+                  Image.asset('images/genshin_stone.jpeg', fit: BoxFit.contain),
             ),
-          )
-        ]),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(product.title),
+                  const SizedBox(height: 5),
+                  Text('NT\$ ${product.price}')
+                ],
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }

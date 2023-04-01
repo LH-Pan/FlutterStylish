@@ -40,12 +40,12 @@ class ProductEntity {
 
   static List<ProductEntity> getFackWomenProductList() {
 
-    return getProducList(7, '女裝', '原石原石原石原石原石原石', 510);
+    return getProducList(9, '女裝', '原石原石原石原石原石原石', 510);
   }
 
   static List<ProductEntity> getFackAccessoriesProductList() {
 
-    return getProducList(9, '配件', '原石原石原石原石原石原石原石原石原石', 3290);
+    return getProducList(12, '配件', '原石原石原石原石原石原石原石原石原石', 3290);
   }
 
 
