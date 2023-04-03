@@ -139,7 +139,37 @@ class _DetailPageState extends State<DetailPage> {
                       ]))
             ],
           ),
-        )
+        ).addPadding(bottom: 15),
+            SizedBox(
+              width: contentWidth,
+              child: Column(children: [
+                Row(children: [
+                  ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) {
+                      return const LinearGradient(
+                         colors: [Color.fromARGB(255, 48, 59, 213), Color.fromARGB(255, 13, 232, 243)],
+                         stops: [0.0, 1.0],
+                         begin: Alignment.centerLeft,
+                         end: Alignment.centerRight,
+                         tileMode: TileMode.clamp,
+                      ).createShader(bounds);
+                    },
+                    child: const Text('細部說明',
+                     style: TextStyle(
+                     fontSize: 16,
+                     fontWeight: FontWeight.bold,
+                   )).addPadding(right: 20)),
+                  const Expanded(child: Divider(color: Colors.grey, thickness: 1.5))
+                ]).addPadding(bottom: 5),
+                const Text('O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy',
+                  style: TextStyle(height: 1.5, fontWeight: FontWeight.w500),).addPadding(bottom: 15),
+                Image.asset('images/genshin1.jpeg', width: contentWidth, fit: BoxFit.fitWidth).addPadding(bottom: 15),
+                Image.asset('images/genshin2.jpeg', width: contentWidth, fit: BoxFit.fitWidth).addPadding(bottom: 15),
+                Image.asset('images/genshin3.jpeg', width: contentWidth, fit: BoxFit.fitWidth).addPadding(bottom: 15),
+                Image.asset('images/genshin4.jpeg', width: contentWidth, fit: BoxFit.fitWidth)
+              ])
+            )
       ])),
     );
   }
