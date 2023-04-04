@@ -21,23 +21,51 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
       appBar: const StAppBar(),
       body: SingleChildScrollView(
-          child: Column(children: [
+          child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+
+              return constraints.maxWidth < desktopContentWidth
+                  ? Center(
+                    child: Column(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: [
+                        MainImageView(contentWidth: mobileContentWidth).addPadding(top: 26, bottom: 20),
+                        SelectionOfItemsView(contentWidth: mobileContentWidth).addPadding(bottom: 15),
+                        StoryWithImagesView(contentWidth: mobileContentWidth)
+                    ],),
+                  )
+                  : DesktopLayout(contentWidth: desktopContentWidth);
+            })),
+    );
+  }
+}
+
+class DesktopLayout extends StatelessWidget {
+  const DesktopLayout({
+    super.key,
+    required this.contentWidth,
+  });
+
+  final double contentWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
         const SizedBox(height: 26),
         Container(
-          constraints: BoxConstraints(minWidth: desktopContentWidth),
-          height: 500,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MainImageView(contentWidth: desktopContentWidth),
-              const SizedBox(width: 10),
-              SelectionOfItemsView(contentWidth: desktopContentWidth)
-            ],
-          ),
+    constraints: BoxConstraints(minWidth: contentWidth),
+    height: 500,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        MainImageView(contentWidth: (contentWidth - 10) / 2),
+        const SizedBox(width: 10),
+        SelectionOfItemsView(contentWidth: (contentWidth - 10) / 2)
+      ],
+    ),
         ).addPadding(bottom: 15),
-            StoryWithImagesView(contentWidth: desktopContentWidth)
-      ])),
-    );
+      StoryWithImagesView(contentWidth: contentWidth)
+      ]);
   }
 }
 
@@ -52,7 +80,7 @@ class SelectionOfItemsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: (contentWidth - 10) / 2,
+        width: contentWidth,
         height: 500,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,8 +197,8 @@ class MainImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset("images/genshin2.jpeg",
         fit: BoxFit.fill,
-        width: (contentWidth - 10) / 2,
-        height: 600);
+        width: contentWidth,
+        height: 500);
   }
 }
 
