@@ -35,23 +35,41 @@ class ProductEntity {
 
   static List<ProductEntity> getFackMenProductList() {
 
-    return getProducList(5, '男裝', '原石原石原石', 170);
+    return getProducList(
+      5, 
+      '男裝',
+      '原石原石原石',
+      170, 
+      ['images/genshin1.jpeg', 'images/genshin2.jpeg', 'images/genshin3.jpeg', 'images/genshin4.jpeg', 'images/genshin5.jpeg']
+    );
   }
 
   static List<ProductEntity> getFackWomenProductList() {
 
-    return getProducList(9, '女裝', '原石原石原石原石原石原石', 510);
+    return getProducList(
+      9, 
+      '女裝', 
+      '原石原石原石原石原石原石', 
+      510,
+      ['images/genshin5.jpeg', 'images/genshin4.jpeg', 'images/genshin3.jpeg', 'images/genshin2.jpeg', 'images/genshin1.jpeg']
+    );
   }
 
   static List<ProductEntity> getFackAccessoriesProductList() {
 
-    return getProducList(12, '配件', '原石原石原石原石原石原石原石原石原石', 3290);
+    return getProducList(
+      12, 
+      '配件', 
+      '原石原石原石原石原石原石原石原石原石', 
+      3290,
+      ['images/genshin2.jpeg', 'images/genshin3.jpeg', 'images/genshin5.jpeg', 'images/genshin4.jpeg', 'images/genshin1.jpeg']
+    );
   }
 
 
-  static List<ProductEntity> getProducList(int times, String category, String title, double price) {
+  static List<ProductEntity> getProducList(int times, String category, String title, double price, List<String> images) {
 
-    return List.generate(times, (index) => ProductEntity(category: category, title: title, price: price));
+    return List.generate(times, (index) => ProductEntity(category: category, title: title, price: price, images: images));
   }
 }
 

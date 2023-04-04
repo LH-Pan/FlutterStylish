@@ -23,8 +23,8 @@ class _DetailPageState extends State<DetailPage> {
       body: SingleChildScrollView(child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         return constraints.maxWidth < desktopContentWidth
-            ? MobileLayout(contentWidth: mobileContentWidth)
-            : DesktopLayout(contentWidth: desktopContentWidth);
+            ? MobileLayout(contentWidth: mobileContentWidth, product: widget.product)
+            : DesktopLayout(contentWidth: desktopContentWidth, product: widget.product);
       })),
     );
   }
@@ -34,9 +34,11 @@ class MobileLayout extends StatelessWidget {
   const MobileLayout({
     super.key,
     required this.contentWidth,
+    required this.product
   });
 
   final double contentWidth;
+  final ProductEntity product;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class MobileLayout extends StatelessWidget {
               .addPadding(top: 26, bottom: 20),
           SelectionOfItemsView(contentWidth: contentWidth)
               .addPadding(bottom: 10),
-          StoryWithImagesView(contentWidth: contentWidth)
+          StoryWithImagesView(contentWidth: contentWidth, imageUrls: product.images ?? [])
         ],
       ),
     );
@@ -59,9 +61,11 @@ class DesktopLayout extends StatelessWidget {
   const DesktopLayout({
     super.key,
     required this.contentWidth,
+    required this.product
   });
 
   final double contentWidth;
+  final ProductEntity product;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +82,7 @@ class DesktopLayout extends StatelessWidget {
           ],
         ),
       ).addPadding(bottom: 15, top: 26),
-      StoryWithImagesView(contentWidth: contentWidth)
+      StoryWithImagesView(contentWidth: contentWidth, imageUrls: product.images ?? [],)
     ]);
   }
 }
@@ -297,9 +301,11 @@ class StoryWithImagesView extends StatelessWidget {
   const StoryWithImagesView({
     super.key,
     required this.contentWidth,
+    required this.imageUrls
   });
 
   final double contentWidth;
+  final List<String> imageUrls;
 
   @override
   Widget build(BuildContext context) {
@@ -331,18 +337,23 @@ class StoryWithImagesView extends StatelessWidget {
           const Text(
             'O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy',
             style: TextStyle(height: 1.5, fontWeight: FontWeight.w500),
-          ).addPadding(bottom: 15),
-          Image.asset('images/genshin1.jpeg',
-                  width: contentWidth, fit: BoxFit.fitWidth)
-              .addPadding(bottom: 15),
-          Image.asset('images/genshin2.jpeg',
-                  width: contentWidth, fit: BoxFit.fitWidth)
-              .addPadding(bottom: 15),
-          Image.asset('images/genshin3.jpeg',
-                  width: contentWidth, fit: BoxFit.fitWidth)
-              .addPadding(bottom: 15),
-          Image.asset('images/genshin4.jpeg',
-              width: contentWidth, fit: BoxFit.fitWidth)
-        ]));
+          ).addPadding(bottom: 15)
+        ] + addImageViewsWith(imageUrls, contentWidth)));
+  }
+
+  List<Padding> addImageViewsWith(List<String> imageUrls, double width) {
+
+    final List<Padding> widgets = [];
+
+    imageUrls.asMap().forEach((index, imageUrl) { 
+
+      widgets.add(Image.asset(
+          imageUrl,
+          width: width,
+          fit: BoxFit.fitWidth,
+        ).addPadding(bottom: index != imageUrls.length - 1 ? 15 : 0));
+    });
+
+    return widgets;
   }
 }
