@@ -6,4 +6,23 @@ extension WidgetExtenion on Widget {
 
     return Padding(padding: EdgeInsets.only(top: top, left: left, right: right, bottom: bottom), child: this);
   }
+
+  ShaderMask addGradientWith(BlendMode blendMode, Color colorOne, Color colorTwo, AlignmentGeometry begin, AlignmentGeometry end) {
+
+    return 
+      ShaderMask(
+        blendMode: blendMode,
+        shaderCallback: (Rect bounds) {
+          return 
+            LinearGradient(
+              colors: [colorOne, colorTwo],
+              stops: const [0.0, 1.0],
+              begin: begin,
+              end: end,
+              tileMode: TileMode.clamp,
+            ).createShader(bounds);
+        },
+        child: this
+     );
+  }
 }

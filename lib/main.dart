@@ -89,7 +89,7 @@ class StAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color.fromARGB(255, 242, 244, 248),
-      title: Image.asset("images/STYLiSH.png",
+      title: Image.asset("assets/images/STYLiSH.png",
           fit: BoxFit.cover, height: AppBar().preferredSize.height / 3),
     );
   }
@@ -243,7 +243,7 @@ class ProductCardView extends StatelessWidget {
               height: 100,
               margin: const EdgeInsets.only(left: 10, right: 10),
               child:
-                  Image.asset('images/genshin_stone.jpeg', fit: BoxFit.contain),
+                  Image.asset('assets/images/genshin_stone.jpeg', fit: BoxFit.contain),
             ),
             Expanded(
               child: Column(
@@ -299,7 +299,7 @@ class BannerImageView extends StatelessWidget {
       margin: const EdgeInsets.only(left: 5, top: 20, right: 5, bottom: 20),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child: Image.asset('images/${imageUrls[index]}', fit: BoxFit.cover),
+      child: Image.asset('assets/images/${imageUrls[index]}', fit: BoxFit.cover),
     );
   }
 }

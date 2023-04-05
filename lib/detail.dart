@@ -50,7 +50,7 @@ class MobileLayout extends StatelessWidget {
               .addPadding(top: 26, bottom: 20),
           SelectionOfItemsView(contentWidth: contentWidth)
               .addPadding(bottom: 10),
-          StoryWithImagesView(contentWidth: contentWidth, imageUrls: product.images ?? [])
+          StoryWithImagesView(contentWidth: contentWidth, imageUrls: product.images)
         ],
       ),
     );
@@ -82,7 +82,7 @@ class DesktopLayout extends StatelessWidget {
           ],
         ),
       ).addPadding(bottom: 15, top: 26),
-      StoryWithImagesView(contentWidth: contentWidth, imageUrls: product.images ?? [],)
+      StoryWithImagesView(contentWidth: contentWidth, imageUrls: product.images)
     ]);
   }
 }
@@ -292,7 +292,7 @@ class MainImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset("images/genshin2.jpeg",
+    return Image.asset("assets/images/genshin2.jpeg",
         fit: BoxFit.fill, width: contentWidth, height: 500);
   }
 }
@@ -313,47 +313,34 @@ class StoryWithImagesView extends StatelessWidget {
         width: contentWidth,
         child: Column(children: [
           Row(children: [
-            ShaderMask(
-                blendMode: BlendMode.srcIn,
-                shaderCallback: (Rect bounds) {
-                  return const LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 48, 59, 213),
-                      Color.fromARGB(255, 13, 232, 243)
-                    ],
-                    stops: [0.0, 1.0],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    tileMode: TileMode.clamp,
-                  ).createShader(bounds);
-                },
-                child: const Text('細部說明',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    )).addPadding(right: 20)),
+            const Text('細部說明',
+              style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            )).addPadding(right: 20)
+            .addGradientWith(
+              BlendMode.srcIn,
+              const Color.fromARGB(255, 48, 59, 213),
+              const Color.fromARGB(255, 13, 232, 243),  
+              Alignment.centerLeft, 
+              Alignment.centerRight),
             const Expanded(child: Divider(color: Colors.grey, thickness: 1.5))
           ]).addPadding(bottom: 5),
           const Text(
             'O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy',
             style: TextStyle(height: 1.5, fontWeight: FontWeight.w500),
-          ).addPadding(bottom: 15)
+          )
         ] + addImageViewsWith(imageUrls, contentWidth)));
   }
 
   List<Padding> addImageViewsWith(List<String> imageUrls, double width) {
 
-    final List<Padding> widgets = [];
-
-    imageUrls.asMap().forEach((index, imageUrl) { 
-
-      widgets.add(Image.asset(
+    return imageUrls.map((imageUrl) => 
+      Image.network(
           imageUrl,
           width: width,
           fit: BoxFit.fitWidth,
-        ).addPadding(bottom: index != imageUrls.length - 1 ? 15 : 0));
-    });
-
-    return widgets;
+        ).addPadding(top: 15)
+    ).toList();
   }
 }

@@ -7,19 +7,37 @@
         {
             "name": "stylish_flutter",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-renderer",
+                "html",
+            ]
         },
         {
             "name": "stylish_flutter (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-renderer",
+                "html",
+            ]
         },
         {
             "name": "stylish_flutter (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-renderer",
+                "html",
+            ]
         }
     ]
 }
