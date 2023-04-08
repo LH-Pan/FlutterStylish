@@ -76,8 +76,6 @@ class ProductEntity {
 
   static List<ProductEntity> getMockProductAPIData(String mockData) {
 
-    // final encodeData = json.encode(mockData);
-
     final dynamic data = json.decode(mockData);
 
     final products = List<ProductEntity>.from(

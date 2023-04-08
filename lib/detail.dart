@@ -74,7 +74,7 @@ class DesktopLayout extends StatelessWidget {
         children: [
           MainImageView(contentWidth: (contentWidth - 10) / 2, mainImageUrl: product.mainImage),
           const SizedBox(width: 10),
-          SelectionOfItemsView(contentWidth: (contentWidth - 10) / 2, product: product,)
+          SelectionOfItemsView(contentWidth: (contentWidth - 10) / 2, product: product)
         ],
       ).addPadding(bottom: 15, top: 26),
       StoryWithImagesView(contentWidth: contentWidth, story: product.story, imageUrls: product.images)
@@ -99,36 +99,24 @@ class SelectionOfItemsView extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(product.title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)).addPadding(bottom: 5),
         Text('${product.id}', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)).addPadding(bottom: 20),
-        Text('NT\$ ${product.price}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)).addPadding(bottom: 5),
+        Text('NT\$ ${product.price}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)).addPadding(bottom: 5),
         const Divider(color: Color.fromARGB(255, 210, 208, 208), thickness: 1).addPadding(bottom: 5),
         Row(children: [
           const Text('顏色', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)).addPadding(right: 5),
-          Container(
-            width: 1,
-            height: 16,
-            color: const Color.fromARGB(255, 210, 208, 208)
-          ).addPadding(right: 10),
-          Container(
+          Container(width: 1, height: 16, color: const Color.fromARGB(255, 210, 208, 208)).addPadding(right: 10),
+          for (var color in product.colors) Container(
             width: 16, 
             height: 16,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 4, 44, 6),
+              color: Color(int.parse(color.code, radix: 16) + 0xFF000000),
               boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 1, offset: const Offset(0.5, 0.5))]
             )
           ).addPadding(right: 10),
-          Container(
-            width: 16,
-            height: 16,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 18, 38, 104),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 1, offset: const Offset(0.5, 0.5))]
-            ),
-          )
         ]).addPadding(bottom: 20),
         Row(children: [
           const Text('尺寸', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)).addPadding(right: 5),
           Container(width: 1, height: 16, color: const Color.fromARGB(255, 210, 208, 208)).addPadding(right: 10),
-          Container(
+          for (var size in product.sizes) Container(
             width: 30,
             height: 25,
               alignment: Alignment.center,
@@ -137,29 +125,8 @@ class SelectionOfItemsView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 1, offset: const Offset(0, 1))]
               ),
-              child:const Text('S', style: TextStyle(color: Colors.white))
+              child: Text(size, style: const TextStyle(color: Colors.white))
           ).addPadding(right: 10),
-          Container(
-            width: 30,
-            height: 25,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 94, 93, 93),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 1, offset: const Offset(0, 1))]
-              ),
-              child: const Text('M', style: TextStyle(color: Colors.white))
-          ).addPadding(right: 10),
-          Container(
-            width: 30,
-            height: 25,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 94, 93, 93),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 1, offset: const Offset(0, 1))]),
-              child: const Text('L', style: TextStyle(color: Colors.white)
-            )),
         ]).addPadding(bottom: 30),
         Row(children: [
           const Text('數量', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)).addPadding(right: 5),
