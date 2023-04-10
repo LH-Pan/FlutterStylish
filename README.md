@@ -124,3 +124,106 @@ State 元件的 StatefulWidget，如此才能實現當某項值發生變化時�
     當 Widget 被永久銷毀時，就會調用 dispose() 方法。這個方法通常用於清理 Widget 佔用的資源，例如取消訂閱、關閉資源等。
 
 以上為 State 中可調用的 method，可以視使用情境在符合的時機調用並以此管理整個 Widget 的狀態。
+
+-----------------------------------------------------------------------------------------------------------------------
+
+## BLoC 狀態管理套件
+
+除了原生的 State 以外，亦有廣為人用的狀態管理套件 - BLoC，其中又被分為兩個套件
+
+1. BLoC：核心套件，含有 State、Event、Stream。
+2. Flutter_Bloc：配合使用 BLoC 的 Flutter widget，如 BLoCBuilder、BLoCProvider、BLoCListener 等。
+
+安裝套件方式： 在 pubspec.yaml 的 dependencies 中加入 bloc 和 flutter_bloc 
+
+```
+    dependencies:
+      flutter:
+        sdk: flutter
+      bloc: ^8.0.1
+      flutter_bloc: ^8.0.1
+```
+
+自定義的事件(Event)與狀態(State):
+
+Event 意即使用者觸發的事件，例如使用者點擊「1」按鈕，則觸發點擊按鈕後的某值增加 1 的事件， State 意指當前狀態，例如按鈕可分成「已點擊」與「未點擊」，
+定義方式可使用 Enum 或是 Class，通常是使用 Class，因 Dart 的 Enum 功用相較之下沒那麼強大
+
+舉個例子將讀取狀態設計成一個 Class
+「未讀取」: NotLoadedState
+「讀取中」: LoadingState
+「已讀取」: LoadedState
+
+```
+    class LoadState {}
+    
+    class NotLoadedState extends LoadState {}
+    
+    class LoadingState extends LoadState {}
+    
+    class LoadedState extends LoadState {
+    
+        final String usernameData;
+        final String passwordData;
+        
+        LoadedState({
+            this.usernameData, 
+            this.passwordData
+        });
+    }
+```
+將讀取按鈕事件設計成另一個 class
+
+```
+    class LoadButtonEvent {}
+    
+    class LoadButtonClickedEvent extends LoadButtonEvent {
+    
+        final String username;
+        final String password;
+        
+        LoadButtonClickedEvent({
+            @required this.username, 
+            @required this.password   
+        })
+    }
+    
+    class LoadButtonUnclickedEvent extends LoadButtonEvent {}
+```
+
+在 BLoC package 中，每個 BLoC 皆為 Bloc 這個 Class 的 Subclass
+最主要實作的是 mapEventToState 這個 method，將傳入的事件轉換成狀態
+
+```
+    class LoadBloC extends Bloc<LoadButtonEvent, LoadState> {
+    
+    @override
+    LoadState get initialState => NotLoadedState();
+    
+    @override
+    Stream<LoadState> mapEventToState(
+        LoadState currentState,
+        LoadButtonEvent event,
+    ) async* {
+    
+        if (event is LoadButtonEvent) {
+        
+            try { 
+                yield LoadingState();
+                final result = load(event.username, event.password);
+                yield LoadedState(usernameData: result.username, passwordData: result.password);
+            }
+            
+        } catch(error) {
+        
+            yield NotLoadedState();
+        }
+        
+        if (event is LoadButtonUnclickedEvent) && (event.username == '' || event.password == '') {
+        
+            yield NotLoadedState();
+            
+        } 
+    }
+```
+yield 意思即為發送一個新的狀態，告訴 BLoC 要發送這個新的狀態給 UI。
