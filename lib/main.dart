@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
 import 'detail.dart';
+import 'package:dio/dio.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   final List<String> imageUrls = [
     'genshin1.jpeg',
     'genshin2.jpeg',
@@ -37,12 +40,65 @@ class _MyHomePageState extends State<MyHomePage> {
     'genshin4.jpeg',
     'genshin5.jpeg'
   ];
+  final dio = Dio();
 
-  // final categoryTitles = <String>['女裝', '男裝', '配件'];
+  final List<ProductEntity> allProducts = [];
 
-  final menProducts = ProductEntity.getFackMenProductList();
-  final womenProducts = ProductEntity.getFackWomenProductList();
-  final accessoryProducts = ProductEntity.getFackAccessoriesProductList();
+  final List<ProductEntity> menProducts = ProductEntity.getFackMenProductList();
+  final List<ProductEntity> womenProducts = ProductEntity.getFackWomenProductList();
+  final List<ProductEntity> accessoryProducts = ProductEntity.getFackAccessoriesProductList();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getHttp();
+    super.initState();
+
+    setState(() {
+      
+    });
+  }
+
+  void getHttp() async {
+    
+     final asyncProducts = await getAllData();
+
+     allProducts.addAll(asyncProducts);
+
+     menProducts.addAll(allProducts.where((product) => product.category == 'men').toList());
+     womenProducts.addAll(allProducts.where((product) => product.category == 'women').toList());
+     accessoryProducts.addAll(allProducts.where((product) => product.category == 'accessories').toList());
+    // print(allProducts.where((product) => product.category == 'men').toList().length);
+    // print(allProducts.where((product) => product.category == 'women').toList().length);
+    // print(allProducts.where((product) => product.category == 'accessories').toList().length);
+  }
+
+  Future<List<ProductEntity>> getAllData() async {
+
+    final List<ProductEntity> result = [];
+
+    int page = 0;
+    while (true) {
+
+      try {
+        final response = await dio.get('https://api.appworks-school.tw/api/1.0/products/all?paging=$page');
+        final productsData = Products.fromJson(response.data);
+        result.addAll(productsData.products);
+
+        // 如果這個頁面已經是最後一頁，跳出循環
+        if (productsData.products.isEmpty) { break; }
+
+        // 繼續獲取下一個頁面的資料
+        page++;
+
+      } catch (error) {
+      // 處理錯誤
+      print(error);
+      break;
+      }
+    }
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
