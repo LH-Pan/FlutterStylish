@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stylish_flutter/model/API/Product/cubit/product_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
 import 'detail.dart';
-import 'package:dio/dio.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,68 +40,11 @@ class _MyHomePageState extends State<MyHomePage> {
     'genshin4.jpeg',
     'genshin5.jpeg'
   ];
-  final dio = Dio();
-
-  final List<ProductEntity> allProducts = [];
-
-  final List<ProductEntity> menProducts = ProductEntity.getFackMenProductList();
-  final List<ProductEntity> womenProducts = ProductEntity.getFackWomenProductList();
-  final List<ProductEntity> accessoryProducts = ProductEntity.getFackAccessoriesProductList();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    getHttp();
-    super.initState();
-
-    setState(() {
-      
-    });
-  }
-
-  void getHttp() async {
-    
-     final asyncProducts = await getAllData();
-
-     allProducts.addAll(asyncProducts);
-
-     menProducts.addAll(allProducts.where((product) => product.category == 'men').toList());
-     womenProducts.addAll(allProducts.where((product) => product.category == 'women').toList());
-     accessoryProducts.addAll(allProducts.where((product) => product.category == 'accessories').toList());
-    // print(allProducts.where((product) => product.category == 'men').toList().length);
-    // print(allProducts.where((product) => product.category == 'women').toList().length);
-    // print(allProducts.where((product) => product.category == 'accessories').toList().length);
-  }
-
-  Future<List<ProductEntity>> getAllData() async {
-
-    final List<ProductEntity> result = [];
-
-    int page = 0;
-    while (true) {
-
-      try {
-        final response = await dio.get('https://api.appworks-school.tw/api/1.0/products/all?paging=$page');
-        final productsData = Products.fromJson(response.data);
-        result.addAll(productsData.products);
-
-        // 如果這個頁面已經是最後一頁，跳出循環
-        if (productsData.products.isEmpty) { break; }
-
-        // 繼續獲取下一個頁面的資料
-        page++;
-
-      } catch (error) {
-      // 處理錯誤
-      print(error);
-      break;
-      }
-    }
-    return result;
-  }
 
   @override
   Widget build(BuildContext context) {
+    final ProductCubit productCubit = ProductCubit();
+
     return Scaffold(
       appBar: const StAppBar(),
       body: Column(
@@ -111,24 +54,55 @@ class _MyHomePageState extends State<MyHomePage> {
             child: BannerListView(imageUrls: imageUrls),
           ),
           Expanded(
-            child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-              final List<List<ProductEntity>> productEntities = [
-                menProducts,
-                womenProducts,
-                accessoryProducts
-              ];
+            child: BlocProvider<ProductCubit>(
+              create: (context) => productCubit,
+              child: BlocBuilder<ProductCubit, FetchState>(
+                builder: (context, state) {
+                  return LayoutBuilder(builder:
+                      (BuildContext context, BoxConstraints constraints) {
 
-              final List<String> categoryTitles = productEntities
-                  .map((products) => products[0].category)
-                  .toList();
+                        switch (state.runtimeType) {
+                        
+                        case FetchInitialState:
 
-              return constraints.maxWidth < 700
-                  ? MobileLayout(productEntities: productEntities)
-                  : DesktopLayout(
-                      categoryTitles: categoryTitles,
-                      productEntities: productEntities);
-            }),
+                          return const Center(child: Text('初始狀態'));
+
+                        case FetchLoadingState:
+
+                          return const Center(child: Text('資料讀取中'));
+
+                        case FetchErrorState:
+
+                          final errorState = state as FetchErrorState;
+
+                          return Center(child: Text(errorState.errorMsg));
+
+                        case FetchSuccessState<List<ProductEntity>>:
+
+                          // final successState = state as FetchSuccessState<List<ProductEntity>>;
+
+                          final products = (state as FetchSuccessState).data;
+                          final womenProducts = Products(title: '女裝', products: products.where((product) => product.category == 'women').toList());
+                          final menProducts = Products(title: '男裝', products: products.where((product) => product.category == 'men').toList());
+                          final accessoryProducts = Products(title: '配件', products: products.where((product) => product.category == 'accessories').toList());
+
+                          final List<Products> productsList = [womenProducts, menProducts, accessoryProducts];
+                          final List<String> categoryTitles = productsList.map((products) => products.title ?? '').toList();
+
+                          return constraints.maxWidth < 700
+                            ? MobileLayout(productsList: productsList)
+                            : DesktopLayout(
+                                categoryTitles: categoryTitles,
+                                productsList: productsList);
+
+                        default:
+
+                          return const Center(child: Text('未知問題'));
+                        }
+                  });
+                },
+              ),
+            ),
           )
         ],
       ),
@@ -150,31 +124,33 @@ class StAppBar extends StatelessWidget with PreferredSizeWidget {
     );
   }
 
-  @override Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class MobileLayout extends StatelessWidget {
-  const MobileLayout({super.key, required this.productEntities});
+  const MobileLayout({super.key, required this.productsList});
 
-  final List<List<ProductEntity>> productEntities;
+  final List<Products> productsList;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: getProductTitleAndCardViews(productEntities),
+      children: getProductTitleAndCardViews(productsList),
     );
   }
 
   List<Widget> getProductTitleAndCardViews(
-      List<List<ProductEntity>> productEntities) {
+       List<Products> productsList) {
     final List<Widget> widgets = [];
 
-    productEntities.asMap().forEach((index, products) {
-      widgets.add(ProductTitleView(listTitle: products[index].category));
+    productsList.asMap().forEach((index, list) {
+      widgets.add(ProductTitleView(listTitle: list.products[index].category));
 
-      for (var product in products) {
-        widgets
-            .add(ProductCardView(product: product,));
+      for (var product in list.products) {
+        widgets.add(ProductCardView(
+          product: product,
+        ));
       }
     });
 
@@ -184,10 +160,10 @@ class MobileLayout extends StatelessWidget {
 
 class DesktopLayout extends StatelessWidget {
   const DesktopLayout(
-      {super.key, required this.categoryTitles, required this.productEntities});
+      {super.key, required this.categoryTitles, required this.productsList});
 
   final List<String> categoryTitles;
-  final List<List<ProductEntity>> productEntities;
+  final List<Products> productsList;
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +173,7 @@ class DesktopLayout extends StatelessWidget {
           (index) => TitledCategoryListView(
                 categoryTitles: categoryTitles,
                 index: index,
-                productList: productEntities[index],
+                productList: productsList[index].products,
               )),
     );
   }
@@ -266,8 +242,7 @@ class ProductListView extends StatelessWidget {
       scrollDirection: Axis.vertical,
       itemCount: productList.length,
       itemBuilder: (BuildContext context, int index) {
-        return ProductCardView(
-            product: productList[index]);
+        return ProductCardView(product: productList[index]);
       },
     );
   }
@@ -283,9 +258,9 @@ class ProductCardView extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DetailPage(product: product))
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailPage(product: product)));
       },
       child: SizedBox(
         child: Card(
@@ -298,8 +273,8 @@ class ProductCardView extends StatelessWidget {
               width: 70,
               height: 100,
               margin: const EdgeInsets.only(left: 10, right: 10),
-              child:
-                  Image.asset('assets/images/genshin_stone.jpeg', fit: BoxFit.contain),
+              child: Image.asset('assets/images/genshin_stone.jpeg',
+                  fit: BoxFit.contain),
             ),
             Expanded(
               child: Column(
@@ -355,7 +330,8 @@ class BannerImageView extends StatelessWidget {
       margin: const EdgeInsets.only(left: 5, top: 20, right: 5, bottom: 20),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child: Image.asset('assets/images/${imageUrls[index]}', fit: BoxFit.cover),
+      child:
+          Image.asset('assets/images/${imageUrls[index]}', fit: BoxFit.cover),
     );
   }
 }

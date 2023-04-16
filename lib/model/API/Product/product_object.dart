@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 
 class Products {
 
+  final String? title;
+
   final List<ProductEntity> products;
 
   Products({
+    this.title,
     required this.products
   });
 
@@ -55,14 +58,12 @@ class ProductEntity {
   });
 
   factory ProductEntity.fromJson(Map<String, dynamic> json) {
-
-    final String descriptionString = json['description'];
-
+    
     return ProductEntity(
       id: json['id'],
       category: json['category'],
       title: json['title'],
-      description: descriptionString.replaceAll('\r\n', '\\r\\n'),
+      description: json['description'] ,
       price: json['price'],
       texture: json['texture'],
       wash: json['wash'],
@@ -250,65 +251,6 @@ class VariantEntity {
       colorCode: json['color_code'],
       size: json['size'],
       stock: json['stock'],
-    );
-  }
-}
-class TestProductEntity {
-  final int? id;
-  final String category;
-  final String title;
-  final String description;
-  final int price;
-  final String texture;
-  final String wash;
-  final String place;
-  final String note;
-  final String story;
-  final List<ColorEntity> colors;
-  final List<String> sizes;
-  final List<VariantEntity> variants;
-  final String mainImage;
-  final List<String> images;
-
-  TestProductEntity({
-    required this.id,
-    required this.category,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.texture,
-    required this.wash,
-    required this.place,
-    required this.note,
-    required this.story,
-    required this.colors,
-    required this.sizes,
-    required this.variants,
-    required this.mainImage,
-    required this.images,
-  });
-
-  factory TestProductEntity.fromJson(Map<String, dynamic> json) {
-    return TestProductEntity(
-      id: json['id'] ?? 0,
-      category: json['category'],
-      title: json['title'],
-      description: json['description'],
-      price: json['price'],
-      texture: json['texture'],
-      wash: json['wash'],
-      place: json['place'],
-      note: json['note'],
-      story: json['story'],
-      colors: (json['colors'] as List<dynamic>)
-          .map((colorJson) => ColorEntity.fromJson(colorJson))
-          .toList(),
-      sizes: (json['sizes'] as List<dynamic>).cast<String>(),
-      variants: (json['variants'] as List<dynamic>)
-          .map((variantJson) => VariantEntity.fromJson(variantJson))
-          .toList(),
-      mainImage: json['main_image'],
-      images: (json['images'] as List<dynamic>).cast<String>(),
     );
   }
 }
