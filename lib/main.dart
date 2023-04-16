@@ -145,7 +145,7 @@ class MobileLayout extends StatelessWidget {
     final List<Widget> widgets = [];
 
     productsList.asMap().forEach((index, list) {
-      widgets.add(ProductTitleView(listTitle: list.products[index].category));
+      widgets.add(ProductTitleView(listTitle: list.title ?? ''));
 
       for (var product in list.products) {
         widgets.add(ProductCardView(
@@ -169,11 +169,11 @@ class DesktopLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: List.generate(
-          categoryTitles.length,
+          productsList.length,
           (index) => TitledCategoryListView(
-                categoryTitles: categoryTitles,
+                title: productsList[index].title ?? '',
                 index: index,
-                productList: productsList[index].products,
+                productsList: productsList,
               )),
     );
   }
@@ -182,27 +182,27 @@ class DesktopLayout extends StatelessWidget {
 class TitledCategoryListView extends StatelessWidget {
   const TitledCategoryListView(
       {super.key,
-      required this.categoryTitles,
+      required this.title,
       required this.index,
-      required this.productList});
+      required this.productsList});
 
-  final List<String> categoryTitles;
+  final String title;
   final int index;
-  final List<ProductEntity> productList;
+  final List<Products> productsList;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
         child: Column(children: [
-      ProductTitleView(listTitle: categoryTitles[index]),
+      ProductTitleView(listTitle: title),
       Expanded(
           child: Container(
         width: (MediaQuery.of(context).size.width -
-                10 * (categoryTitles.length - 1)) /
-            categoryTitles.length,
+                10 * (productsList.length - 1)) /
+            productsList.length,
         padding: const EdgeInsets.only(left: 10),
         child: ProductListView(
-          productList: productList,
+          productList: productsList[index].products,
         ),
       ))
     ]));
