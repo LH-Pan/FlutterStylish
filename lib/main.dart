@@ -271,10 +271,19 @@ class ProductCardView extends StatelessWidget {
           child: Row(children: [
             Container(
               width: 70,
-              height: 100,
-              margin: const EdgeInsets.only(left: 10, right: 10),
-              child: Image.asset('assets/images/genshin_stone.jpeg',
-                  fit: BoxFit.contain),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0), 
+                  bottomLeft: Radius.circular(10.0)
+                )
+              ),
+              margin: const EdgeInsets.only(right: 10),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10.0), 
+                  bottomLeft: Radius.circular(10.0)
+                ),
+                child: Image.network(product.mainImage)),
             ),
             Expanded(
               child: Column(
