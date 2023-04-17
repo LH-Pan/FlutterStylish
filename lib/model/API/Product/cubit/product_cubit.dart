@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 part 'fetch_state.dart';
 
 
-class ProductCubit extends Cubit<FetchState> {
+class ProductsCubit extends Cubit<FetchState> {
 
-  ProductCubit() : super(FetchInitialState()) {
+  ProductsCubit() : super(FetchInitialState()) {
 
     fetchProducts();
   }
@@ -51,5 +55,50 @@ class ProductCubit extends Cubit<FetchState> {
       }
     }
     return result;
+  }
+}
+
+
+class ProductCubit extends Cubit<FetchState> {
+
+  final String id;
+
+  ProductCubit({required this.id}) : super(FetchInitialState()) {
+
+    fetchProduct(id);
+  }
+
+  Future<void> fetchProduct(String id) async {
+
+    try {
+
+      emit(FetchLoadingState());
+
+      final productData = await getProductDataWith(id);
+
+      emit(FetchSuccessState(productData));
+
+    } catch (error) {
+
+      emit(FetchErrorState(error.toString()));
+    }    
+  }
+
+  Future<ProductEntity> getProductDataWith(String id) async {
+
+    var url = Uri.parse('https://api.appworks-school.tw/api/1.0/products/details?id=$id');
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      // 處理成功的情況
+      final jsonData = jsonDecode(response.body);
+      final productData = ProductEntity.fromJson(jsonData['data']);
+
+      return productData;
+
+    } else {
+      // 處理失敗的情況
+      throw Exception('Request failed with status: ${response.statusCode}.');
+    }
   }
 }

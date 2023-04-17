@@ -97,6 +97,27 @@ class ProductEntity {
     required this.images,
   });
 
+  factory ProductEntity.empty() {
+
+    return ProductEntity(
+      id: 0,
+      category: '',
+      title: '',
+      description: '',
+      price: 0,
+      texture: '',
+      wash: '',
+      place: '',
+      note: '',
+      story: '', 
+      colors: [],
+      sizes: [],
+      variants: [],
+      mainImage: '',
+      images: []
+    );
+  }
+
   factory ProductEntity.fromJson(Map<String, dynamic> json) {
     
     return ProductEntity(

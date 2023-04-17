@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ProductCubit productCubit = ProductCubit();
+    final ProductsCubit productCubit = ProductsCubit();
     final campaignsCubit = CampaignsCubit();
     return Scaffold(
       appBar: const StAppBar(),
@@ -77,9 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Expanded(
-            child: BlocProvider<ProductCubit>(
+            child: BlocProvider<ProductsCubit>(
               create: (context) => productCubit,
-              child: BlocBuilder<ProductCubit, FetchState>(
+              child: BlocBuilder<ProductsCubit, FetchState>(
                 builder: (context, state) {
                   return LayoutBuilder(builder:
                       (BuildContext context, BoxConstraints constraints) {
@@ -283,7 +283,7 @@ class ProductCardView extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailPage(product: product)));
+                builder: (context) => DetailPage(product: product, productID: "${product.id}")));
       },
       child: SizedBox(
         child: Card(
