@@ -1,6 +1,36 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+class Campaigns {
+  List<Campaign> campaigns;
+
+  Campaigns({required this.campaigns});
+
+  factory Campaigns.fromJson(Map<String, dynamic> json) {
+    return Campaigns(
+      campaigns: List<Campaign>.from(
+        json['data'].map((campaignData) => Campaign.fromJson(campaignData))
+      ),
+    );
+  }
+}
+
+class Campaign {
+  int id;
+  int productId;
+  String picture;
+  String story;
+
+  Campaign({required this.id, required this.productId, required this.picture, required this.story});
+
+  factory Campaign.fromJson(Map<String, dynamic> json) {
+    return Campaign(
+      id: json['id'],
+      productId: json['product_id'],
+      picture: json['picture'],
+      story: json['story'],
+    );
+  }
+}
 
 class Products {
 
@@ -15,7 +45,17 @@ class Products {
 
   factory Products.fromJson(Map<String, dynamic> json) {
     return Products(
+      title: json['title'] ?? '',
       products: (json['data'] as List<dynamic>)
+          .map((productJson) => ProductEntity.fromJson(productJson))
+          .toList()
+    );
+  }
+
+  factory Products.fromProducts(Map<String, dynamic> json) {
+    return Products(
+      title: json['title'] ?? '',
+      products: (json['products'] as List<dynamic>)
           .map((productJson) => ProductEntity.fromJson(productJson))
           .toList()
     );

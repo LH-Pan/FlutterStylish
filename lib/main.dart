@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stylish_flutter/model/API/Product/cubit/campaigns_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/product_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
 import 'detail.dart';
@@ -33,25 +34,45 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  final List<String> imageUrls = [
-    'genshin1.jpeg',
-    'genshin2.jpeg',
-    'genshin3.jpeg',
-    'genshin4.jpeg',
-    'genshin5.jpeg'
-  ];
-
   @override
   Widget build(BuildContext context) {
     final ProductCubit productCubit = ProductCubit();
-
+    final campaignsCubit = CampaignsCubit();
     return Scaffold(
       appBar: const StAppBar(),
       body: Column(
         children: [
           SizedBox(
             height: 190,
-            child: BannerListView(imageUrls: imageUrls),
+            child: BlocProvider<CampaignsCubit>(
+              create: (context) => campaignsCubit,
+              child: BlocBuilder<CampaignsCubit, FetchState>(
+                builder: (context, state) {
+
+                  switch (state.runtimeType) {
+                  case FetchInitialState: return const Center(child: Text('初始狀態'));
+
+                  case FetchLoadingState: return const Center(child: Text('資料讀取中'));
+                  
+                  case FetchErrorState:
+
+                    final errorState = state as FetchErrorState;
+
+                    return Center(child: Text(errorState.errorMsg));
+
+                  case FetchSuccessState<List<Campaign>>:
+
+                    final campaigns = ((state as FetchSuccessState).data as List<Campaign>);
+
+                    final imageUrls = campaigns.map((e) => e.picture).toList();
+
+                    return BannerListView(imageUrls: imageUrls);
+
+                  default: return const Center(child: Text('未知問題'));
+                  }
+                },
+              ),
+            ),
           ),
           Expanded(
             child: BlocProvider<ProductCubit>(
@@ -60,45 +81,48 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (context, state) {
                   return LayoutBuilder(builder:
                       (BuildContext context, BoxConstraints constraints) {
+                    switch (state.runtimeType) {
+                      case FetchInitialState: return const Center(child: Text('初始狀態'));
 
-                        switch (state.runtimeType) {
-                        
-                        case FetchInitialState:
+                      case FetchLoadingState: return const Center(child: Text('資料讀取中'));
 
-                          return const Center(child: Text('初始狀態'));
+                      case FetchErrorState:
 
-                        case FetchLoadingState:
+                        final errorState = state as FetchErrorState;
 
-                          return const Center(child: Text('資料讀取中'));
+                        return Center(child: Text(errorState.errorMsg));
 
-                        case FetchErrorState:
+                      case FetchSuccessState<List<ProductEntity>>:
+                        final products = (state as FetchSuccessState).data;
+                        final womenProducts = Products(
+                            title: '女裝',
+                            products: products
+                                .where((product) => product.category == 'women')
+                                .toList());
+                        final menProducts = Products(
+                            title: '男裝',
+                            products: products
+                                .where((product) => product.category == 'men')
+                                .toList());
+                        final accessoryProducts = Products(
+                            title: '配件',
+                            products: products
+                                .where((product) =>
+                                    product.category == 'accessories')
+                                .toList());
 
-                          final errorState = state as FetchErrorState;
+                        final List<Products> productsList = [
+                          womenProducts,
+                          menProducts,
+                          accessoryProducts
+                        ];
 
-                          return Center(child: Text(errorState.errorMsg));
-
-                        case FetchSuccessState<List<ProductEntity>>:
-
-                          // final successState = state as FetchSuccessState<List<ProductEntity>>;
-
-                          final products = (state as FetchSuccessState).data;
-                          final womenProducts = Products(title: '女裝', products: products.where((product) => product.category == 'women').toList());
-                          final menProducts = Products(title: '男裝', products: products.where((product) => product.category == 'men').toList());
-                          final accessoryProducts = Products(title: '配件', products: products.where((product) => product.category == 'accessories').toList());
-
-                          final List<Products> productsList = [womenProducts, menProducts, accessoryProducts];
-                          final List<String> categoryTitles = productsList.map((products) => products.title ?? '').toList();
-
-                          return constraints.maxWidth < 700
+                        return constraints.maxWidth < 700
                             ? MobileLayout(productsList: productsList)
-                            : DesktopLayout(
-                                categoryTitles: categoryTitles,
-                                productsList: productsList);
+                            : DesktopLayout(productsList: productsList);
 
-                        default:
-
-                          return const Center(child: Text('未知問題'));
-                        }
+                      default: return const Center(child: Text('未知問題'));
+                    }
                   });
                 },
               ),
@@ -140,8 +164,7 @@ class MobileLayout extends StatelessWidget {
     );
   }
 
-  List<Widget> getProductTitleAndCardViews(
-       List<Products> productsList) {
+  List<Widget> getProductTitleAndCardViews(List<Products> productsList) {
     final List<Widget> widgets = [];
 
     productsList.asMap().forEach((index, list) {
@@ -159,10 +182,8 @@ class MobileLayout extends StatelessWidget {
 }
 
 class DesktopLayout extends StatelessWidget {
-  const DesktopLayout(
-      {super.key, required this.categoryTitles, required this.productsList});
+  const DesktopLayout({super.key, required this.productsList});
 
-  final List<String> categoryTitles;
   final List<Products> productsList;
 
   @override
@@ -272,18 +293,15 @@ class ProductCardView extends StatelessWidget {
             Container(
               width: 70,
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0), 
-                  bottomLeft: Radius.circular(10.0)
-                )
-              ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0))),
               margin: const EdgeInsets.only(right: 10),
               child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10.0), 
-                  bottomLeft: Radius.circular(10.0)
-                ),
-                child: Image.network(product.mainImage)),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0)),
+                  child: Image.network(product.mainImage)),
             ),
             Expanded(
               child: Column(
@@ -340,7 +358,7 @@ class BannerImageView extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child:
-          Image.asset('assets/images/${imageUrls[index]}', fit: BoxFit.cover),
+          Image.network(imageUrls[index], fit: BoxFit.cover),
     );
   }
 }
