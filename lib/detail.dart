@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
 import 'main.dart';
@@ -191,10 +193,12 @@ class MainImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Image.network(
-      mainImageUrl, 
-      fit: BoxFit.fill, 
-      width: contentWidth
+    return CachedNetworkImage(
+            width: contentWidth,
+            fit: BoxFit.fill,
+            imageUrl: mainImageUrl,
+            placeholder: (context, url) => const CupertinoActivityIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error)
     );
   }
 }
@@ -234,11 +238,13 @@ class StoryWithImagesView extends StatelessWidget {
   List<Padding> addImageViewsWith(List<String> imageUrls, double width) {
 
     return imageUrls.map((imageUrl) => 
-      Image.network(
-          imageUrl,
-          width: width,
-          fit: BoxFit.fitWidth,
-        ).addPadding(top: 15)
+      CachedNetworkImage(
+        width: width,
+        fit: BoxFit.fitWidth,
+        imageUrl: imageUrl,
+        placeholder: (context, url) => const CupertinoActivityIndicator(),
+        errorWidget: (context, url, error) => const Icon(Icons.error)
+      ).addPadding(top: 15)
     ).toList();
   }
 }

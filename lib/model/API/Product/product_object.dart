@@ -122,21 +122,6 @@ class ProductEntity {
     );
   }
 
-  static List<ProductEntity> getFackMenProductList() {
-
-    return getMapProductAPIData(mockMenProductAPIData);
-  }
-
-  static List<ProductEntity> getFackWomenProductList() {
-
-    return getMapProductAPIData(mockWomenProductAPIData);
-  }
-
-  static List<ProductEntity> getFackAccessoriesProductList() {
-
-    return getMapProductAPIData(mockAccessoriesAPIData);
-  }
-
   static List<ProductEntity> getMapProductAPIData(String stringData) {
 
     final dynamic data = json.decode(stringData);
@@ -146,116 +131,6 @@ class ProductEntity {
 
     return products;
   }
-
-  static const mockMenProductAPIData = '''
-  {"products": [{"id": 1234, "category": "男裝", "title": "厚實毛呢格子外套", "description": "高抗寒素材選用，保暖也時尚有型", "price": 2200, "texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455", 
-              "size":"M","stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}], 
-              "main_image":"https://api.appworks-school.tw/assets/201902191210/main.jpg","images": ["https://api.appworks-school.tw/assets/201807201824/0.jpg", 
-              "https://api.appworks-school.tw/assets/201807201824/1.jpg", "https://api.appworks-school.tw/assets/201807201824/0.jpg",
-               "https://api.appworks-school.tw/assets/201807201824/1.jpg"]},
-              {"id": 5678, "category": "男裝", "title": "厚實毛呢格子外套", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201902191210/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]}]
-  }
-  ''';
-
-  static const mockWomenProductAPIData = '''
-  {"products": [{"id": 1234, "category": "女裝", "title": "前開衩扭結洋裝", "description": "厚薄: 薄\\r\\n彈性: 無", "price": 2200, "texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455", 
-              "size":"M","stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}], 
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg","images": ["https://api.appworks-school.tw/assets/201807201824/0.jpg", 
-              "https://api.appworks-school.tw/assets/201807201824/1.jpg", "https://api.appworks-school.tw/assets/201807201824/0.jpg",
-               "https://api.appworks-school.tw/assets/201807201824/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]}]
-  }
-  ''';
-
-static const mockAccessoriesAPIData = """
-  {"products": [{"id": 1234, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型", "price": 2200, "texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455", 
-              "size":"M","stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}], 
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg","images": ["https://api.appworks-school.tw/assets/201807201824/0.jpg", 
-              "https://api.appworks-school.tw/assets/201807201824/1.jpg", "https://api.appworks-school.tw/assets/201807201824/0.jpg",
-               "https://api.appworks-school.tw/assets/201807201824/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]},
-              {"id": 5678, "category": "女裝", "title": "前開衩扭結洋裝", "description": "高抗寒素材選用，保暖也時尚有型","price": 2200,"texture": "棉、聚脂纖維",
-              "wash": "手洗(水溫40度", "place": "韓國", "note": "實品顏色以單品照為主", "story": "O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.", "colors": [{"code":"334455", "name":"深藍"},
-              {"code":"FFFFFF", "name":"白色"}], "sizes": ["S", "M"], "variants":[{"color_code":"334455", "size":"S", "stock":5}, {"color_code":"334455",
-              "size":"M", "stock":10}, {"color_code":"FFFFFF", "size":"S", "stock":0}, {"color_code":"FFFFFF", "size":"M", "stock":2}],
-              "main_image":"https://api.appworks-school.tw/assets/201807201824/main.jpg", "images": ["https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg", "https://api.appworks-school.tw/assets/201902191210/0.jpg", 
-              "https://api.appworks-school.tw/assets/201902191210/1.jpg"]}]
-  }
-  """;
 }
 
 class ColorEntity {

@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/campaigns_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/product_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'detail.dart';
 
 void main() {
@@ -301,7 +303,12 @@ class ProductCardView extends StatelessWidget {
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10.0),
                       bottomLeft: Radius.circular(10.0)),
-                  child: Image.network(product.mainImage)),
+                  child: CachedNetworkImage(
+                           imageUrl: product.mainImage,
+                           placeholder: (context, url) => const CupertinoActivityIndicator(),
+                           errorWidget: (context, url, error) => const Icon(Icons.error),
+                  )
+              ),
             ),
             Expanded(
               child: Column(
@@ -357,8 +364,11 @@ class BannerImageView extends StatelessWidget {
       margin: const EdgeInsets.only(left: 5, top: 20, right: 5, bottom: 20),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child:
-          Image.network(imageUrls[index], fit: BoxFit.cover),
+      child: CachedNetworkImage(
+              imageUrl: imageUrls[index],
+              placeholder: (context, url) => const CupertinoActivityIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+      )
     );
   }
 }

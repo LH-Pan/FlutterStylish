@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/product_cubit.dart';
-
 import '../product_object.dart';
 
 

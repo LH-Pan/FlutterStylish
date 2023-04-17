@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
 import 'package:dio/dio.dart';
 part 'fetch_state.dart';
