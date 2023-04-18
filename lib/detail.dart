@@ -159,36 +159,14 @@ class SelectionOfItemsView extends StatelessWidget {
               .addPadding(bottom: 5),
           ColorSelectorView(
             colors: product.colors, 
-            onColorSelected: (index) {
+            onColorSelected: (colorIndex) {
             
           },).addPadding(bottom: 20),
-          Row(children: [
-            const Text('尺寸',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))
-                .addPadding(right: 5),
-            Container(
-                    width: 1,
-                    height: 16,
-                    color: const Color.fromARGB(255, 210, 208, 208))
-                .addPadding(right: 10),
-            for (var size in product.sizes)
-              Container(
-                      width: 30,
-                      height: 25,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 94, 93, 93),
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 1,
-                                offset: const Offset(0, 1))
-                          ]),
-                      child: Text(size,
-                          style: const TextStyle(color: Colors.white)))
-                  .addPadding(right: 10),
-          ]).addPadding(bottom: 30),
+          SizeSelectorView(
+            sizes: product.sizes,
+            onSizeSelected: (sizeIndex) {
+              
+            }).addPadding(bottom: 30),
           Row(children: [
             const Text('數量',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))
@@ -247,6 +225,64 @@ class SelectionOfItemsView extends StatelessWidget {
           Text('加工產地 / ${product.place}', style: const TextStyle(fontSize: 16))
               .addPadding(bottom: 8),
         ]));
+  }
+}
+
+class SizeSelectorView extends StatefulWidget {
+  const SizeSelectorView({
+    super.key,
+    required this.sizes,
+    required this.onSizeSelected
+  });
+
+  final List<String> sizes;
+  final void Function(int) onSizeSelected;
+
+  @override
+  State<SizeSelectorView> createState() => _SizeSelectorViewState();
+}
+
+class _SizeSelectorViewState extends State<SizeSelectorView> {
+
+  int? _selectedSizeIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      const Text('尺寸',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))
+          .addPadding(right: 5),
+      Container(
+              width: 1,
+              height: 16,
+              color: const Color.fromARGB(255, 210, 208, 208))
+          .addPadding(right: 10),
+      for (var index = 0; index < widget.sizes.length; index++)
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _selectedSizeIndex = index;
+            });
+            widget.onSizeSelected(index);
+          },
+          child: Container(
+                  width: 30,
+                  height: 25,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: index == _selectedSizeIndex ? const Color.fromARGB(255, 237, 232, 232) : const Color.fromARGB(255, 94, 93, 93),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 1,
+                            offset: const Offset(0, 1))
+                      ]),
+                  child: Text(widget.sizes[index],
+                      style: TextStyle(color: index == _selectedSizeIndex ? Colors.grey : Colors.white)))
+              .addPadding(right: 10),
+        ),
+    ]);
   }
 }
 
