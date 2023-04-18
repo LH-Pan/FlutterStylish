@@ -157,29 +157,11 @@ class SelectionOfItemsView extends StatelessWidget {
               .addPadding(bottom: 5),
           const Divider(color: Color.fromARGB(255, 210, 208, 208), thickness: 1)
               .addPadding(bottom: 5),
-          Row(children: [
-            const Text('顏色',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))
-                .addPadding(right: 5),
-            Container(
-                    width: 1,
-                    height: 16,
-                    color: const Color.fromARGB(255, 210, 208, 208))
-                .addPadding(right: 10),
-            for (var color in product.colors)
-              Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                      color:
-                          Color(int.parse(color.code, radix: 16) + 0xFF000000),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 1,
-                            offset: const Offset(0.5, 0.5))
-                      ])).addPadding(right: 10),
-          ]).addPadding(bottom: 20),
+          ColorSelectorView(
+            colors: product.colors, 
+            onColorSelected: (index) {
+            
+          },).addPadding(bottom: 20),
           Row(children: [
             const Text('尺寸',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))
@@ -265,6 +247,61 @@ class SelectionOfItemsView extends StatelessWidget {
           Text('加工產地 / ${product.place}', style: const TextStyle(fontSize: 16))
               .addPadding(bottom: 8),
         ]));
+  }
+}
+
+class ColorSelectorView extends StatefulWidget {
+  const ColorSelectorView({
+    super.key,
+    required this.colors,
+    required this.onColorSelected
+  });
+
+  final List<ColorEntity> colors;
+  final void Function(int) onColorSelected;
+
+  @override
+  State<ColorSelectorView> createState() => _ColorSelectorViewState();
+}
+
+class _ColorSelectorViewState extends State<ColorSelectorView> {
+
+  int? _selectedColorIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      const Text('顏色',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))
+          .addPadding(right: 5),
+      Container(
+              width: 1,
+              height: 16,
+              color: const Color.fromARGB(255, 210, 208, 208))
+          .addPadding(right: 10),
+       for (var index = 0; index < widget.colors.length; index++)
+
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _selectedColorIndex = index;
+            });
+            widget.onColorSelected(index);
+          },
+          child: Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                  border: index == _selectedColorIndex ? Border.all(color: Colors.black, width: 1.5) : null,
+                  color: Color(int.parse(widget.colors[index].code, radix: 16) + 0xFF000000),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 1,
+                        offset: const Offset(0.5, 0.5))
+                  ])).addPadding(right: 10),
+        ),
+    ]);
   }
 }
 
