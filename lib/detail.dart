@@ -167,40 +167,7 @@ class SelectionOfItemsView extends StatelessWidget {
             onSizeSelected: (sizeIndex) {
               
             }).addPadding(bottom: 30),
-          Row(children: [
-            const Text('數量',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))
-                .addPadding(right: 5),
-            Container(
-                    width: 1,
-                    height: 16,
-                    color: const Color.fromARGB(255, 210, 208, 208))
-                .addPadding(right: 10),
-            Expanded(
-                child: Row(children: [
-              InkWell(
-                      onTap: () {},
-                      child: Container(
-                          width: 25,
-                          height: 25,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.black),
-                          child: const Icon(Icons.remove, color: Colors.white)))
-                  .wrapWithExpanded(),
-              const Text('1', textAlign: TextAlign.center)
-                  .wrapWithExpanded(flex: 2),
-              InkWell(
-                      onTap: () {},
-                      child: Container(
-                          alignment: Alignment.center,
-                          width: 25,
-                          height: 25,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.black),
-                          child: const Icon(Icons.add, color: Colors.white)))
-                  .wrapWithExpanded()
-            ]))
-          ]).addPadding(bottom: 20),
+          const QuantityStepperView(stockLimit: 2).addPadding(bottom: 20),
           Row(children: [
             TextButton(
                     onPressed: () {},
@@ -225,6 +192,85 @@ class SelectionOfItemsView extends StatelessWidget {
           Text('加工產地 / ${product.place}', style: const TextStyle(fontSize: 16))
               .addPadding(bottom: 8),
         ]));
+  }
+}
+
+class QuantityStepperView extends StatefulWidget {
+  const QuantityStepperView({
+    super.key,
+    required this.stockLimit
+  });
+
+  final int stockLimit;
+
+  @override
+  State<QuantityStepperView> createState() => _QuantityStepperViewState();
+}
+
+class _QuantityStepperViewState extends State<QuantityStepperView> {
+  int quantity = 1;
+  bool decreaseDisabled = true;
+  late bool increaseDisabled = quantity == widget.stockLimit ? true : false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      const Text('數量',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))
+          .addPadding(right: 5),
+      Container(
+              width: 1,
+              height: 16,
+              color: const Color.fromARGB(255, 210, 208, 208))
+          .addPadding(right: 10),
+      Expanded(
+          child: Row(children: [
+        InkWell(
+                onTap: decreaseDisabled ? null : () {
+                  setState(() {
+
+                    quantity --;
+                    increaseDisabled = false;
+
+                    if (quantity <= 1) {
+                      
+                      decreaseDisabled = true;
+                    } 
+                  });
+                },
+                child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: decreaseDisabled ? Colors.grey : Colors.black),
+                    child: const Icon(Icons.remove, color: Colors.white)))
+            .wrapWithExpanded(),
+        Text('$quantity', textAlign: TextAlign.center)
+            .wrapWithExpanded(flex: 2),
+        InkWell(
+                onTap: increaseDisabled ? null : () {
+                    setState(() {
+
+                      quantity ++;
+                      decreaseDisabled = false;
+
+                      if (quantity >= widget.stockLimit) {
+                      
+                        increaseDisabled = true;
+                      
+                      } 
+                    });
+                },
+                child: Container(
+                    alignment: Alignment.center,
+                    width: 25,
+                    height: 25,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: increaseDisabled ? Colors.grey : Colors.black),
+                    child: const Icon(Icons.add, color: Colors.white)))
+            .wrapWithExpanded()
+      ]))
+    ]);
   }
 }
 
