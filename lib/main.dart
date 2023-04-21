@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stylish_flutter/extension/widget_extension.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/campaigns_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/product_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
@@ -36,6 +38,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  static const platform = MethodChannel('TestMethodChannel');
+  String? _testPlatformString;
+
+  Future<void> _getTestPlatformString() async {
+
+    String testPlatformString;
+
+    try {
+
+      final String result = await platform.invokeMethod('getTestPlatformString');
+      testPlatformString = result;
+
+    }  catch (e) {
+
+      testPlatformString = "Not「iOS」or「Android」device";
+    }
+
+    setState(() {
+      
+      _testPlatformString = testPlatformString;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
+          ChannelTestButton(
+            msgString: _testPlatformString,
+            buttonTapped: () {
+              _getTestPlatformString();
+          }).addPadding(bottom: 10)
+          ,
           Expanded(
             child: BlocProvider<ProductsCubit>(
               create: (context) => productCubit,
@@ -156,7 +187,10 @@ class StAppBar extends StatelessWidget with PreferredSizeWidget {
 }
 
 class MobileLayout extends StatelessWidget {
-  const MobileLayout({super.key, required this.productsList});
+  const MobileLayout({
+    super.key, 
+    required this.productsList
+  });
 
   final List<Products> productsList;
 
@@ -179,8 +213,37 @@ class MobileLayout extends StatelessWidget {
         ));
       }
     });
-
     return widgets;
+  }
+}
+
+class ChannelTestButton extends StatefulWidget {
+  const ChannelTestButton({
+    super.key,
+    this.msgString,
+    required this.buttonTapped
+  });
+
+  final String? msgString;
+  final void Function() buttonTapped;
+
+  @override
+  State<ChannelTestButton> createState() => _ChannelTestButtonState();
+}
+
+class _ChannelTestButtonState extends State<ChannelTestButton> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: widget.msgString == null 
+    ? ElevatedButton(
+        onPressed: () {
+          widget.buttonTapped();
+        },
+        child: const Text('Test Platform Channel Button')
+      )
+    : Text(widget.msgString ?? 'Error').addPadding(top: 10)
+    );
   }
 }
 
