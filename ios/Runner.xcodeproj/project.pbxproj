@@ -14,18 +14,18 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		CCDCE18E29F53642003A5AFB /* TPDirect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCDCE18D29F53641003A5AFB /* TPDirect.framework */; };
-		CCDCE18F29F53642003A5AFB /* TPDirect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CCDCE18D29F53641003A5AFB /* TPDirect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CCDCE19C29F55872003A5AFB /* TPDirect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCDCE19B29F55872003A5AFB /* TPDirect.framework */; };
+		CCDCE19D29F55872003A5AFB /* TPDirect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CCDCE19B29F55872003A5AFB /* TPDirect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CCDCE19029F53642003A5AFB /* Embed Frameworks */ = {
+		CCDCE19E29F55873003A5AFB /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CCDCE18F29F53642003A5AFB /* TPDirect.framework in Embed Frameworks */,
+				CCDCE19D29F55872003A5AFB /* TPDirect.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,7 +49,7 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A73BA53FA4A21E2E53BF489C /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		CCDCE18D29F53641003A5AFB /* TPDirect.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TPDirect.framework; path = Runner/TPDirect.framework; sourceTree = "<group>"; };
+		CCDCE19B29F55872003A5AFB /* TPDirect.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TPDirect.framework; path = Runner/TPDirect.framework; sourceTree = "<group>"; };
 		FD80E9803BF970DDAC7B31BC /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,7 +59,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				445B663A2192E91C47B2BE3C /* Pods_Runner.framework in Frameworks */,
-				CCDCE18E29F53642003A5AFB /* TPDirect.framework in Frameworks */,
+				CCDCE19C29F55872003A5AFB /* TPDirect.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,7 +69,7 @@
 		7B27AB228B7BCBE894A35055 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CCDCE18D29F53641003A5AFB /* TPDirect.framework */,
+				CCDCE19B29F55872003A5AFB /* TPDirect.framework */,
 				822A161DD3D31AE587046916 /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
@@ -144,7 +144,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				3A1D480F5EF6AF9CEC43A762 /* [CP] Embed Pods Frameworks */,
-				CCDCE19029F53642003A5AFB /* Embed Frameworks */,
+				CCDCE19E29F55873003A5AFB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -161,7 +161,7 @@
 		97C146E61CF9000F007C117D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
@@ -366,6 +366,8 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = K3759D92BK;
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = arm64;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Runner",
@@ -374,6 +376,16 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"sqlite3\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"path_provider_foundation\"",
+					"-framework",
+					"\"sqflite\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.stylishFlutter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -501,6 +513,8 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = K3759D92BK;
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = arm64;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Runner",
@@ -509,6 +523,16 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"sqlite3\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"path_provider_foundation\"",
+					"-framework",
+					"\"sqflite\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.stylishFlutter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -528,6 +552,8 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = K3759D92BK;
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = arm64;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Runner",
@@ -536,6 +562,16 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"sqlite3\"",
+					"-framework",
+					"\"FMDB\"",
+					"-framework",
+					"\"path_provider_foundation\"",
+					"-framework",
+					"\"sqflite\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.stylishFlutter;
 				PRODUCT_NAME = "$(TARGET_NAME)";

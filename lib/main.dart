@@ -39,7 +39,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  static const platform = MethodChannel('TestMethodChannel');
+  MethodChannel platform = const MethodChannel('TestMethodChannel');
   String? _testPlatformString;
 
   Future<void> _getTestPlatformString() async {
