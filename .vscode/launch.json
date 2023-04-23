@@ -10,9 +10,11 @@
             "type": "dart",
             "args": [
                 "-d",
-                "chrome",
-                "--web-renderer",
-                "html",
+                "BF6BDC61-777E-49AE-B438-1927AE5BB090",
+                // "chrome",
+                // "--web-renderer",
+                // "html",
+                "--no-sound-null-safety",
             ]
         },
         {
@@ -25,6 +27,7 @@
                 "chrome",
                 "--web-renderer",
                 "html",
+                // "--no-sound-null-safety",
             ]
         },
         {
@@ -37,6 +40,7 @@
                 "chrome",
                 "--web-renderer",
                 "html",
+                // "--no-sound-null-safety",
             ]
         }
     ]

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/product_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
+import 'package:stylish_flutter/shopping_cart.dart';
 import 'main.dart';
 import 'extension/widget_extension.dart';
 
@@ -170,7 +171,14 @@ class SelectionOfItemsView extends StatelessWidget {
           const QuantityStepperView(stockLimit: 2).addPadding(bottom: 20),
           Row(children: [
             TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                     
+                      Navigator.push(
+                         context,
+                          MaterialPageRoute(
+                              builder: (context) => 
+                              const ShoppingCartPage()));
+                    },
                     style: OutlinedButton.styleFrom(
                         shape: const RoundedRectangleBorder(),
                         backgroundColor: const Color.fromARGB(255, 48, 48, 48)),

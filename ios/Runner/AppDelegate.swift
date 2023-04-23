@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import TPDirect
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -23,8 +24,8 @@ import Flutter
 
        self?.getTestPlatformString(result: result)
     })
-
-    GeneratedPluginRegistrant.register(with: self)
+    
+      GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
