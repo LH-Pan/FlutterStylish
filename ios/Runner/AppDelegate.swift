@@ -40,12 +40,12 @@ import TPDirect
         result("Tap Pay setup succeed")
     }
     
-    private func getPrime(args: [String:Any], prime: @escaping(String) -> Void, failCallBack: @escaping(String) -> Void) {
+    private func getPrime(args: [String:Any]?, prime: @escaping(String) -> Void, failCallBack: @escaping(String) -> Void) {
         
-        let cardNumber = (args["cardNumber"] as? String ?? "")
-        let dueMonth = (args["dueMonth"] as? String ?? "")
-        let dueYear = (args["dueYear"] as? String ?? "")
-        let ccv = (args["ccv"] as? String ?? "")
+        let cardNumber = (args?["cardNumber"] as? String ?? "")
+        let dueMonth = (args?["dueMonth"] as? String ?? "")
+        let dueYear = (args?["dueYear"] as? String ?? "")
+        let ccv = (args?["ccv"] as? String ?? "")
         
         let card = TPDCard.setWithCardNumber(cardNumber, withDueMonth: dueMonth, withDueYear: dueYear, withCCV: ccv)
         
@@ -67,11 +67,6 @@ import TPDirect
         
         let method = call.method
         
-        guard let args = call.arguments as? [String:Any] else {
-            result("args cast error")
-            return
-        }
-        
         switch method {
             
         case "getTestPlatformString":
@@ -84,7 +79,7 @@ import TPDirect
             
         case "getPrime":
             
-            getPrime(args: args) { prime in
+            getPrime(args: call.arguments as? [String : Any] ?? [:]) { prime in
                 
                 result(prime)
                 

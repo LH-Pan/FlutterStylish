@@ -32,7 +32,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     
                 try {
     
-                  final String result = await platform.invokeMethod('setupTappay', {'fuck':'fuckyou'});
+                  final String result = await platform.invokeMethod('setupTappay');
     
                   setState(() {
                     
