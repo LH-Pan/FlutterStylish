@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylish_flutter/extension/widget_extension.dart';
+import 'package:stylish_flutter/google_map.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/campaigns_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/product_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'detail.dart';
+import 'google_map.dart';
 
 void main() {
   runApp(const MyApp());
@@ -406,7 +408,15 @@ class BannerListView extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemCount: imageUrls.length,
       itemBuilder: (BuildContext context, int index) {
-        return BannerImageView(index: index, imageUrls: imageUrls);
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const GoogleMapPage()
+              ));
+          },
+          child: BannerImageView(index: index, imageUrls: imageUrls));
       },
     );
   }
