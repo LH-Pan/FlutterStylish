@@ -14,6 +14,8 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		CCAAAB7A29FE675A00631058 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAAAB7929FE675A00631058 /* WebKit.framework */; };
+		CCAAAB7C29FE680100631058 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAAAB7B29FE680100631058 /* SafariServices.framework */; };
 		CCDCE19C29F55872003A5AFB /* TPDirect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCDCE19B29F55872003A5AFB /* TPDirect.framework */; };
 		CCDCE19D29F55872003A5AFB /* TPDirect.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CCDCE19B29F55872003A5AFB /* TPDirect.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -49,6 +51,8 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A73BA53FA4A21E2E53BF489C /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		CCAAAB7929FE675A00631058 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		CCAAAB7B29FE680100631058 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		CCDCE19B29F55872003A5AFB /* TPDirect.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TPDirect.framework; path = Runner/TPDirect.framework; sourceTree = "<group>"; };
 		FD80E9803BF970DDAC7B31BC /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,6 +64,8 @@
 			files = (
 				445B663A2192E91C47B2BE3C /* Pods_Runner.framework in Frameworks */,
 				CCDCE19C29F55872003A5AFB /* TPDirect.framework in Frameworks */,
+				CCAAAB7C29FE680100631058 /* SafariServices.framework in Frameworks */,
+				CCAAAB7A29FE675A00631058 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +75,8 @@
 		7B27AB228B7BCBE894A35055 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CCAAAB7B29FE680100631058 /* SafariServices.framework */,
+				CCAAAB7929FE675A00631058 /* WebKit.framework */,
 				CCDCE19B29F55872003A5AFB /* TPDirect.framework */,
 				822A161DD3D31AE587046916 /* Pods_Runner.framework */,
 			);
@@ -145,6 +153,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				3A1D480F5EF6AF9CEC43A762 /* [CP] Embed Pods Frameworks */,
 				CCDCE19E29F55873003A5AFB /* Embed Frameworks */,
+				DF18B9985768437056B8A749 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -271,6 +280,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+		};
+		DF18B9985768437056B8A749 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
