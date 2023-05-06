@@ -8,8 +8,8 @@ import 'package:stylish_flutter/model/API/Product/cubit/campaigns_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/product_cubit.dart';
 import 'package:stylish_flutter/model/API/Product/product_object.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:stylish_flutter/web_rtc_page.dart';
 import 'detail.dart';
-import 'google_map.dart';
 
 void main() {
   runApp(const MyApp());
@@ -180,7 +180,18 @@ class StAppBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       backgroundColor: const Color.fromARGB(255, 242, 244, 248),
       title: Image.asset("assets/images/STYLiSH.png",
-          fit: BoxFit.cover, height: AppBar().preferredSize.height / 3),
+          fit: BoxFit.cover,
+          height: AppBar().preferredSize.height / 3
+      ),
+      actions: [IconButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const WebRTCPage()));
+        }, 
+        icon: const Icon(Icons.public),
+        color: Colors.grey)],
     );
   }
 
