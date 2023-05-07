@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
-import 'dart:async';
-import 'dart:typed_data';
 import 'signaling.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
@@ -14,6 +12,14 @@ class DataChannelSample extends StatefulWidget {
   State<DataChannelSample> createState() => _DataChannelSampleState();
 }
 
+class MessageData {
+
+  final String text;
+  final bool isRecived;
+
+  MessageData(this.text, this.isRecived);
+}
+
 class _DataChannelSampleState extends State<DataChannelSample> {
   Signaling? _signaling;
   List<dynamic> _peers = [];
@@ -21,12 +27,12 @@ class _DataChannelSampleState extends State<DataChannelSample> {
   bool _inCalling = false;
   RTCDataChannel? _dataChannel;
   Session? _session;
-  Timer? _timer;
-  var _text = '';
-  // ignore: unused_element
   _DataChannelSampleState();
   bool _waitAccept = false;
   late BuildContext _dialogContext;
+
+  final TextEditingController _textController = TextEditingController();
+  final List<MessageData> _messages = [];
 
   @override
   initState() {
@@ -38,7 +44,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
   deactivate() {
     super.deactivate();
     _signaling?.close();
-    _timer?.cancel();
+    // _timer?.cancel();
   }
 
   Future<bool?> _showAcceptDialog() {
@@ -100,7 +106,7 @@ class _DataChannelSampleState extends State<DataChannelSample> {
         if (data.isBinary) {
           print('Got binary [${data.binary}]');
         } else {
-          _text = data.text;
+          _messages.insert(0, MessageData(data.text, true));
         }
       });
     };
@@ -124,7 +130,6 @@ class _DataChannelSampleState extends State<DataChannelSample> {
           setState(() {
             _session = session;
           });
-          _timer = Timer.periodic(const Duration(seconds: 1), _handleDataChannelTest);
           break;
         case CallState.CallStateBye:
           if (_waitAccept) {
@@ -135,11 +140,9 @@ class _DataChannelSampleState extends State<DataChannelSample> {
           setState(() {
             _inCalling = false;
           });
-          _timer?.cancel();
           _dataChannel = null;
           _inCalling = false;
           _session = null;
-          _text = '';
           break;
         case CallState.CallStateInvite:
           _waitAccept = true;
@@ -175,14 +178,6 @@ class _DataChannelSampleState extends State<DataChannelSample> {
         _peers = event['peers'];
       });
     });
-  }
-
-  _handleDataChannelTest(Timer timer) async {
-    String text =
-        'Say hello ${timer.tick} times, from [$_selfId]';
-    _dataChannel
-        ?.send(RTCDataChannelMessage.fromBinary(Uint8List(timer.tick + 1)));
-    _dataChannel?.send(RTCDataChannelMessage(text));
   }
 
   _invitePeer(context, peerId) async {
@@ -222,12 +217,48 @@ class _DataChannelSampleState extends State<DataChannelSample> {
     ]);
   }
 
+  _handleSubmitted(String text) {
+    _textController.clear();
+    _dataChannel?.send(RTCDataChannelMessage(text));
+    setState(() {
+      _messages.insert(0, MessageData(text, false));
+    });
+  }
+
+  Widget _buildTextComposer() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: <Widget>[
+          Flexible(
+            child: TextFormField(
+              controller: _textController,
+              decoration:
+                  const InputDecoration.collapsed(hintText: "Send a message"),
+              onFieldSubmitted: _handleSubmitted,
+            ),
+          ),
+          FloatingActionButton(
+            onPressed: () => _handleSubmitted(_textController.text),
+            child: const Icon(Icons.send),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessage(MessageData messageData) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(messageData.text, textAlign: messageData.isRecived ? TextAlign.start : TextAlign.end),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            (_selfId != null ? ' [Your ID ($_selfId)] ' : '')),
+        title: Text((_selfId != null ? ' [Your ID ($_selfId)] ' : '')),
         actions: const <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -236,17 +267,27 @@ class _DataChannelSampleState extends State<DataChannelSample> {
           ),
         ],
       ),
-      floatingActionButton: _inCalling
-          ? FloatingActionButton(
-              heroTag: 'btn5',
-              onPressed: _hangUp,
-              tooltip: 'Hangup',
-              child: const Icon(Icons.call_end),
-            )
-          : null,
       body: _inCalling
-          ? Center(
-              child: Text('Recevied => $_text'),
+          ? Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(8.0),
+                    reverse: true,
+                    itemCount: _messages.length,
+                    itemBuilder: (_, int index) =>
+                        _buildMessage(_messages[index]),
+                  ),
+                ),
+                const Divider(height: 1.0),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: _buildTextComposer(),
+                ),
+                const SizedBox(height: 30)
+              ],
             )
           : ListView.builder(
               shrinkWrap: true,
