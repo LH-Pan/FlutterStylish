@@ -219,10 +219,16 @@ class _DataChannelSampleState extends State<DataChannelSample> {
 
   _handleSubmitted(String text) {
     _textController.clear();
-    _dataChannel?.send(RTCDataChannelMessage(text));
-    setState(() {
-      _messages.insert(0, MessageData(text, false));
-    });
+
+    final String trimmedText = text.trim();
+
+    if (trimmedText.isNotEmpty) {
+      
+      _dataChannel?.send(RTCDataChannelMessage(text));
+      setState(() {
+        _messages.insert(0, MessageData(text, false));
+      });
+    }
   }
 
   Widget _buildTextComposer() {
