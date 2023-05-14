@@ -11,10 +11,10 @@ PODS:
   - google_maps_flutter_ios (0.0.1):
     - Flutter
     - GoogleMaps
-  - GoogleMaps (6.2.1):
-    - GoogleMaps/Maps (= 6.2.1)
-  - GoogleMaps/Base (6.2.1)
-  - GoogleMaps/Maps (6.2.1):
+  - GoogleMaps (5.2.0):
+    - GoogleMaps/Maps (= 5.2.0)
+  - GoogleMaps/Base (5.2.0)
+  - GoogleMaps/Maps (5.2.0):
     - GoogleMaps/Base
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -29,7 +29,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
-  - GoogleMaps (= 6.2.1)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
@@ -59,11 +58,11 @@ SPEC CHECKSUMS:
   flutter_webrtc: ae7ab6f74d3c4f186594a74863f11433e7ab148a
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_maps_flutter_ios: 3e0b99383a8003b8169d06e7e324170bd0424105
-  GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
+  GoogleMaps: 025272d5876d3b32604e5c080dc25eaf68764693
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   WebRTC-SDK: 566e58d2916cb79d770350169a449ea523f5db7c
 
-PODFILE CHECKSUM: 58c3481dc696a38b19d74cc6f472258539f7dadf
+PODFILE CHECKSUM: 06b5533b847c66dab82d107d2f0766aeaf7c974d
 
 COCOAPODS: 1.11.3

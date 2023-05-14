@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stylish_flutter/ar_kit_page.dart';
 import 'package:stylish_flutter/extension/widget_extension.dart';
 import 'package:stylish_flutter/google_map.dart';
 import 'package:stylish_flutter/model/API/Product/cubit/campaigns_cubit.dart';
@@ -183,15 +184,25 @@ class StAppBar extends StatelessWidget with PreferredSizeWidget {
           fit: BoxFit.cover,
           height: AppBar().preferredSize.height / 3
       ),
-      actions: [IconButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
                 builder: (context) => const WebRTCPage()));
-        }, 
-        icon: const Icon(Icons.public),
-        color: Colors.grey)],
+            }, 
+          icon: const Icon(Icons.public),
+          color: Colors.grey),
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ARKitPage()));
+          }, 
+          icon: const Icon(Icons.tv),
+          color: Colors.grey)],
     );
   }
 

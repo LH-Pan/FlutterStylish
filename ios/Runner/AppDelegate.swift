@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import TPDirect
+//import TPDirect
 import GoogleMaps
 
 @UIApplicationMain
@@ -37,35 +37,35 @@ import GoogleMaps
         result("This is「iOS」Test Method Channel String")
     }
     
-    private func setupTappay(result: @escaping FlutterResult) {
-        
-        TPDSetup.setWithAppId(appID, withAppKey: appKey, with: .sandBox)
-
-        result("Tap Pay setup succeed")
-    }
+//    private func setupTappay(result: @escaping FlutterResult) {
+//
+//        TPDSetup.setWithAppId(appID, withAppKey: appKey, with: .sandBox)
+//
+//        result("Tap Pay setup succeed")
+//    }
     
-    private func getPrime(args: [String:Any]?, prime: @escaping(String) -> Void, failCallBack: @escaping(String) -> Void) {
-        
-        let cardNumber = (args?["cardNumber"] as? String ?? "")
-        let dueMonth = (args?["dueMonth"] as? String ?? "")
-        let dueYear = (args?["dueYear"] as? String ?? "")
-        let ccv = (args?["ccv"] as? String ?? "")
-        
-        let card = TPDCard.setWithCardNumber(cardNumber, withDueMonth: dueMonth, withDueYear: dueYear, withCCV: ccv)
-        
-        card.onSuccessCallback { (tpPrime, cardInfo, cardIdentifier, merchantReferenceInfo) in
-            
-            if let tpPrime = tpPrime {
-                
-                prime("{\"status\":\"\", \"message\":\"\", \"prime\":\"\(tpPrime)\"}")
-            }
-            
-        }.onFailureCallback { (status, message) in
-            
-            failCallBack("{\"status\":\"\(status)\", \"message\":\"\(message)\", \"prime\":\"\"}")
-            
-        }.createToken(withGeoLocation: "UNKNOWN")
-    }
+//    private func getPrime(args: [String:Any]?, prime: @escaping(String) -> Void, failCallBack: @escaping(String) -> Void) {
+//
+//        let cardNumber = (args?["cardNumber"] as? String ?? "")
+//        let dueMonth = (args?["dueMonth"] as? String ?? "")
+//        let dueYear = (args?["dueYear"] as? String ?? "")
+//        let ccv = (args?["ccv"] as? String ?? "")
+//
+//        let card = TPDCard.setWithCardNumber(cardNumber, withDueMonth: dueMonth, withDueYear: dueYear, withCCV: ccv)
+//
+//        card.onSuccessCallback { (tpPrime, cardInfo, cardIdentifier, merchantReferenceInfo) in
+//
+//            if let tpPrime = tpPrime {
+//
+//                prime("{\"status\":\"\", \"message\":\"\", \"prime\":\"\(tpPrime)\"}")
+//            }
+//
+//        }.onFailureCallback { (status, message) in
+//
+//            failCallBack("{\"status\":\"\(status)\", \"message\":\"\(message)\", \"prime\":\"\"}")
+//
+//        }.createToken(withGeoLocation: "UNKNOWN")
+//    }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         
@@ -77,20 +77,20 @@ import GoogleMaps
             
             getTestPlatformString(result: result)
             
-        case "setupTappay":
+//        case "setupTappay":
             
-            setupTappay(result: result)
+//            setupTappay(result: result)
             
-        case "getPrime":
-            
-            getPrime(args: call.arguments as? [String : Any] ?? [:]) { prime in
-                
-                result(prime)
-                
-            } failCallBack: { message in
-                
-                result(message)
-            }
+//        case "getPrime":
+//            
+//            getPrime(args: call.arguments as? [String : Any] ?? [:]) { prime in
+//                
+//                result(prime)
+//                
+//            } failCallBack: { message in
+//                
+//                result(message)
+//            }
             
         default:
             
