@@ -51,5 +51,7 @@
 	<string>APP 想取用相機權限</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>APP 想取用麥克風權限</string>
+	<key></key>
+	<string></string>
 </dict>
 </plist>

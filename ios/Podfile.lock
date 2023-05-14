@@ -1,4 +1,6 @@
 PODS:
+  - arkit_plugin (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - flutter_webrtc (0.9.25):
     - Flutter
@@ -23,6 +25,7 @@ PODS:
   - WebRTC-SDK (104.5112.16)
 
 DEPENDENCIES:
+  - arkit_plugin (from `.symlinks/plugins/arkit_plugin/ios`)
   - Flutter (from `Flutter`)
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
@@ -37,6 +40,8 @@ SPEC REPOS:
     - WebRTC-SDK
 
 EXTERNAL SOURCES:
+  arkit_plugin:
+    :path: ".symlinks/plugins/arkit_plugin/ios"
   Flutter:
     :path: Flutter
   flutter_webrtc:
@@ -49,6 +54,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
+  arkit_plugin: 3e42571e8be84adabb8a178bd51c22fa981e16bd
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_webrtc: ae7ab6f74d3c4f186594a74863f11433e7ab148a
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
