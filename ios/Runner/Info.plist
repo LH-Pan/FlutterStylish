@@ -50,6 +50,6 @@
 	<key>NSCameraUsageDescription</key>
 	<string>APP 想取用相機權限</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>洗勒考喔</string>
+	<string>APP 想取用麥克風權限</string>
 </dict>
 </plist>
